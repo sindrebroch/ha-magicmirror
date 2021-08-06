@@ -1,0 +1,16 @@
+{
+  "domain": "magicmirrorremote",
+  "name": "magicmirrorremote",
+  "config_flow": true,
+  "documentation": "https://www.github.com/sindrebroch/ha-magicmirror-remote",
+  "requirements": [],
+  "ssdp": [],
+  "zeroconf": [],
+  "homekit": {},
+  "dependencies": [],
+  "codeowners": [
+    "@sindrebroch"
+  ],
+  "iot_class": "local_polling",
+  "version": "1.0.0"
+}
