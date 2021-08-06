@@ -1,0 +1,3 @@
+monitor_on:
+  name: Turn monitor on
+  description: Turn on monitor for magicmirror

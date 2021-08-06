@@ -1,6 +1,6 @@
-# MagicMirror for HomeAssistant
+# WIP MagicMirror for HomeAssistant
 
-WIP: This is just a skelton for now.
+WIP: Nothing is implemented yet. Implementation to come
 
 HomeAssistant-integration for MagicMirror.
 
