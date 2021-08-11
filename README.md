@@ -1,6 +1,6 @@
-# WIP MagicMirror for HomeAssistant
+# MagicMirror for HomeAssistant
 
-WIP: Nothing is implemented yet. Implementation to come
+WIP: Still a lot to do
 
 HomeAssistant-integration for MagicMirror.
 
@@ -27,38 +27,21 @@ Requires [MMM-Remote-Control](https://github.com/Jopyth/MMM-Remote-Control) inst
 4. Configure the `MagicMirror`-integration.
 
 ## Features
-### System control
-- SHUTDOWN
-- REBOOT
-- MONITORON
-- MONITOROFF
-- MONITORTOGGLE
-- MONITORSTATUS
+### Binary sensor
+- Monitor state
 
-### MagicMirror control
-- RESTART
-- REFRESH
-- UPDATE
-- SAVE
-- BRIGHTNESS
+### Switch
+- Toggle monitor
 
-### MagicMirror Electron Browser window control
-- MINIMIZE
-- TOGGLEFULLSCREEN
-- DEVTOOLS
-
-### Module control
-- HIDE
-- SHOW
-- TOGGLE
-- FORCE
-- MODULE_DATA
-
-### Alerts and Notifications
-- SHOW_ALERT
-- HIDE_ALERT
-- USER_PRESENCE
-- NOTIFICATION
-- DELAYED
-
-#'http://192.168.30.20:8080/api/monitor/on?apiKey=bc2e979db92f4741afad01d5d18eb8e2'
+### Services
+- monitor on
+- monitor off
+- monitor toggle
+- shutdown
+- reboot
+- restart
+- minimize
+- toggle fullscreen
+- brightness
+- notification
+- alert
