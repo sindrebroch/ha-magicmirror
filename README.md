@@ -1,6 +1,6 @@
 # MagicMirror for HomeAssistant
 
-WIP: Still a lot to do
+WIP
 
 HomeAssistant-integration for MagicMirror.
 
