@@ -19,7 +19,7 @@ Requires [MMM-Remote-Control](https://github.com/Jopyth/MMM-Remote-Control) inst
 ### MANUAL INSTALLATION
 
 1. Download the `Source code (zip)` file from the
-   [latest release](https://github.com/sindrebroch/ha-magicmirror-remote/releases/latest).
+   [latest release](https://github.com/sindrebroch/ha-magicmirror/releases/latest).
 2. Unpack the release and copy the `custom_components/ha-magicmirror` directory
    into the `custom_components` directory of your Home Assistant
    installation.
