@@ -1,4 +1,5 @@
 """Config flow for MagicMirror integration."""
+
 from __future__ import annotations
 
 import logging
@@ -8,15 +9,24 @@ import aiohttp
 import voluptuous as vol
 
 from homeassistant import config_entries
-from .magicmirror import MagicMirror
+from homeassistant.const import CONF_API_KEY, CONF_HOST, CONF_PORT
 from homeassistant.data_entry_flow import FlowResult
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
 from .const import DOMAIN as MAGICMIRROR_DOMAIN
+from .magicmirror import MagicMirror
+from .models import MagicMirrorResponse
 
-from homeassistant.const import (CONF_HOST, CONF_NAME)
+SCHEMA = vol.Schema(
+    {
+        vol.Required(CONF_HOST): str,
+        vol.Required(CONF_PORT, default="8080"): str,
+        vol.Required(CONF_API_KEY): str,
+    }
+)
 
 _LOGGER = logging.getLogger(__name__)
+
 
 class MagicMirrorFlowHandler(config_entries.ConfigFlow, domain=MAGICMIRROR_DOMAIN):
     """Config flow for MagicMirror."""
@@ -30,19 +40,24 @@ class MagicMirrorFlowHandler(config_entries.ConfigFlow, domain=MAGICMIRROR_DOMAI
 
         if user_input is not None:
 
-            name = user_input[CONF_NAME]
             host = user_input[CONF_HOST]
+            port = user_input[CONF_PORT]
+            api_key = user_input[CONF_API_KEY]
 
-            #if await self._async_existing_devices(area.name):
-            #    return self.async_abort(reason="already_configured")
+            if await self._async_existing_devices(host):
+                return self.async_abort(reason="already_configured")
 
             session = async_get_clientsession(self.hass)
-            magicmirror = MagicMirror(session=session)
+            magicmirror = MagicMirror(host, port, api_key, session=session)
 
             errors: dict[str, Any] = {}
 
             try:
-                await magicmirror.fetch()
+                t: MagicMirrorResponse = await magicmirror.api_test()
+
+                if not t.success:
+                    errors["base"] = "cannot_connect"
+
             except aiohttp.ClientError as error:
                 errors["base"] = "cannot_connect"
                 _LOGGER.warning("error=%s. errors=%s", error, errors)
@@ -52,8 +67,7 @@ class MagicMirrorFlowHandler(config_entries.ConfigFlow, domain=MAGICMIRROR_DOMAI
                     step_id="user", data_schema=SCHEMA, errors=errors
                 )
 
-            #unique_id: str = magicmirror
-            unique_id: str = "unique_id"
+            unique_id: str = host
             await self.async_set_unique_id(unique_id)
             self._abort_if_unique_id_configured()
 
@@ -69,8 +83,8 @@ class MagicMirrorFlowHandler(config_entries.ConfigFlow, domain=MAGICMIRROR_DOMAI
         )
 
     async def _async_existing_devices(self, host: str) -> bool:
-
         """Find existing devices."""
+
         existing_devices = [
             f"{entry.data.get(CONF_HOST)}" for entry in self._async_current_entries()
         ]

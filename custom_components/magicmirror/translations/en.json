@@ -10,7 +10,11 @@
         },
         "step": {
             "user": {
-                "data": {}
+                "data": {
+                    "host": "Host",
+                    "port": "Port",
+                    "api_key": "API-key"
+                }
             }
         }
     }

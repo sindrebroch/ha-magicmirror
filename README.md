@@ -61,3 +61,4 @@ Requires [MMM-Remote-Control](https://github.com/Jopyth/MMM-Remote-Control) inst
 - NOTIFICATION
 - DELAYED
 
+#'http://192.168.30.20:8080/api/monitor/on?apiKey=bc2e979db92f4741afad01d5d18eb8e2'
