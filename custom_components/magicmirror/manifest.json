@@ -2,7 +2,7 @@
   "domain": "magicmirror",
   "name": "Magic Mirror",
   "config_flow": true,
-  "documentation": "https://www.github.com/sindrebroch/ha-magicmirror-remote",
+  "documentation": "https://www.github.com/sindrebroch/ha-magicmirror",
   "requirements": [],
   "ssdp": [],
   "zeroconf": [],
