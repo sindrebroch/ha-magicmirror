@@ -1,5 +1,5 @@
 {
-    "name": "magicmirror",
+    "name": "Magic Mirror",
     "render_readme": true,
     "domains": ["sensor"],
     "homeassistant": "2021.7.0",
