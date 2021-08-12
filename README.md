@@ -1,7 +1,5 @@
 # MagicMirror for HomeAssistant
 
-WIP
-
 HomeAssistant-integration for MagicMirror.
 
 Requires [MMM-Remote-Control](https://github.com/Jopyth/MMM-Remote-Control) installed on your MagicMirror host, with an API-key configured.
@@ -40,8 +38,6 @@ Requires [MMM-Remote-Control](https://github.com/Jopyth/MMM-Remote-Control) inst
 - shutdown
 - reboot
 - restart
-- minimize
-- toggle fullscreen
 - brightness
 - notification
 - alert
