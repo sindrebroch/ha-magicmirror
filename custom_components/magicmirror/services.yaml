@@ -22,18 +22,6 @@ restart:
   name: Restart
   description: Restart Magic Mirror
 
-minimize:
-  name: Minimize
-  description: Minimize Magic Mirror
-
-toggle_fullscreen:
-  name: Toggle fullscreen
-  description: Toggle fullscreen Magic Mirror
-
-devtools:
-  name: Devtools
-  description: Devtools Magic Mirror
-
 refresh:
   name: refresh
   description: refresh Magic Mirror
@@ -51,30 +39,6 @@ brightness:
         number:
           min: 0
           max: 100
-
-module:
-  name: module
-  description: module Magic Mirror
-
-module_action:
-  name: module_action
-  description: module_action Magic Mirror
-
-module_installed:
-  name: module_installed
-  description: module_installed Magic Mirror
-
-module_available:
-  name: module_available
-  description: module_available Magic Mirror
-
-module_update:
-  name: module_update
-  description: module_update Magic Mirror
-
-module_install:
-  name: module_install
-  description: module_install Magic Mirror
 
 notification:
   name: notification

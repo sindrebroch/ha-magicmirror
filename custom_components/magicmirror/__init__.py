@@ -157,26 +157,6 @@ async def async_register_services(
         async_restart,
     )
 
-    async def async_minimize(_):
-        """Minimize MagicMirror."""
-        await magicmirror.minimize()
-
-    hass.services.async_register(
-        MAGICMIRROR_DOMAIN,
-        SERVICE_MINIMIZE,
-        async_minimize,
-    )
-
-    async def async_toggle_fullscreen(_):
-        """Toggle MagicMirror fullscreen."""
-        await magicmirror.toggle_fullscreen()
-
-    hass.services.async_register(
-        MAGICMIRROR_DOMAIN,
-        SERVICE_FULLSCREEN_TOGGLE,
-        async_toggle_fullscreen,
-    )
-
     async def async_notification(service: ServiceCall):
         """Notification MagicMirror."""
         await magicmirror.alert(
@@ -242,79 +222,6 @@ async def async_register_services(
         async_refresh,
     )
 
-    async def async_devtools(_):
-        """Devtools MagicMirror."""
-        await magicmirror.devtools()
-
-    hass.services.async_register(
-        MAGICMIRROR_DOMAIN,
-        SERVICE_DEVTOOLS,
-        async_devtools,
-    )
-
-    async def async_module(service: ServiceCall):
-        """Endpoint for module MagicMirror."""
-        await magicmirror.module(service.data["moduleName"])
-
-    hass.services.async_register(
-        MAGICMIRROR_DOMAIN,
-        SERVICE_MODULE,
-        async_module,
-        schema=vol.Schema({vol.Required("moduleName"): cv.string}),
-    )
-
-    async def async_module_action(service: ServiceCall):
-        """Endpoint for module action MagicMirror."""
-        await magicmirror.module_action(
-            service.data["moduleName"],
-            service.data["action"],
-        )
-
-    hass.services.async_register(
-        MAGICMIRROR_DOMAIN,
-        SERVICE_MODULE_ACTION,
-        async_module_action,
-        schema=vol.Schema(
-            {
-                vol.Required("moduleName"): cv.string,
-                vol.Required("action"): cv.string,
-            },
-        ),
-    )
-
-    async def async_module_installed(_):
-        """Endpoint for module installed MagicMirror."""
-        await magicmirror.module_installed()
-
-    hass.services.async_register(
-        MAGICMIRROR_DOMAIN,
-        SERVICE_MODULE_INSTALLED,
-        async_module_installed,
-    )
-
-    async def async_module_available(_):
-        """Endpoint for module available MagicMirror."""
-        await magicmirror.module_available()
-
-    hass.services.async_register(
-        MAGICMIRROR_DOMAIN,
-        SERVICE_MODULE_AVAILABLE,
-        async_module_available,
-    )
-
-    async def async_module_update(service: ServiceCall):
-        """Endpoint for module update MagicMirror."""
-        await magicmirror.module_update(service.data["moduleName"])
-
-    hass.services.async_register(
-        MAGICMIRROR_DOMAIN,
-        SERVICE_MODULE_UPDATE,
-        async_module_update,
-        schema=vol.Schema(
-            {vol.Required("moduleName"): cv.string},
-        ),
-    )
-
     return True
 
 
@@ -340,17 +247,8 @@ async def async_unload_services(hass: HomeAssistant) -> bool:
     hass.services.async_remove(MAGICMIRROR_DOMAIN, SERVICE_SHUTDOWN)
     hass.services.async_remove(MAGICMIRROR_DOMAIN, SERVICE_REBOOT)
     hass.services.async_remove(MAGICMIRROR_DOMAIN, SERVICE_RESTART)
-    hass.services.async_remove(MAGICMIRROR_DOMAIN, SERVICE_MINIMIZE)
-    hass.services.async_remove(MAGICMIRROR_DOMAIN, SERVICE_FULLSCREEN_TOGGLE)
-    hass.services.async_remove(MAGICMIRROR_DOMAIN, SERVICE_DEVTOOLS)
     hass.services.async_remove(MAGICMIRROR_DOMAIN, SERVICE_REFRESH)
     hass.services.async_remove(MAGICMIRROR_DOMAIN, SERVICE_BRIGHTNESS)
-    hass.services.async_remove(MAGICMIRROR_DOMAIN, SERVICE_MODULE)
-    hass.services.async_remove(MAGICMIRROR_DOMAIN, SERVICE_MODULE_ACTION)
-    hass.services.async_remove(MAGICMIRROR_DOMAIN, SERVICE_MODULE_INSTALLED)
-    hass.services.async_remove(MAGICMIRROR_DOMAIN, SERVICE_MODULE_AVAILABLE)
-    hass.services.async_remove(MAGICMIRROR_DOMAIN, SERVICE_MODULE_UPDATE)
-    hass.services.async_remove(MAGICMIRROR_DOMAIN, SERVICE_MODULE_INSTALL)
     hass.services.async_remove(MAGICMIRROR_DOMAIN, SERVICE_NOTIFICATION)
     hass.services.async_remove(MAGICMIRROR_DOMAIN, SERVICE_ALERT)
 
@@ -373,7 +271,7 @@ class MagicMirrorDataUpdateCoordinator(DataUpdateCoordinator):
     ) -> None:
         """Initialize."""
 
-        update_interval = timedelta(minutes=60)
+        update_interval = timedelta(minutes=1)
 
         self.magicmirror: MagicMirror = magicmirror
 
