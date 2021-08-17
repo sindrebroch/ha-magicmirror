@@ -3,6 +3,7 @@
   "name": "Magic Mirror",
   "config_flow": true,
   "documentation": "https://www.github.com/sindrebroch/ha-magicmirror",
+  "issue_tracker": "https://github.com/sindrebroch/ha-magicmirror/issues",
   "requirements": [],
   "ssdp": [],
   "zeroconf": [],
