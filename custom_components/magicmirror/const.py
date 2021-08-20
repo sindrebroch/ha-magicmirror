@@ -4,4 +4,4 @@ import logging
 
 DOMAIN = "magicmirror"
 
-LOGGER: Logger = getLogger(__package__)
+LOGGER: Logger = logging.getLogger(__package__)
