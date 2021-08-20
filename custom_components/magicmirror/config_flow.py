@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import logging
 from typing import Any
 
 import aiohttp
@@ -13,7 +12,7 @@ from homeassistant.const import CONF_API_KEY, CONF_HOST, CONF_PORT
 from homeassistant.data_entry_flow import FlowResult
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
-from .const import DOMAIN as MAGICMIRROR_DOMAIN
+from .const import DOMAIN as MAGICMIRROR_DOMAIN, LOGGER
 from .magicmirror import MagicMirror
 from .models import MagicMirrorResponse
 
@@ -24,8 +23,6 @@ SCHEMA = vol.Schema(
         vol.Required(CONF_API_KEY): str,
     }
 )
-
-_LOGGER = logging.getLogger(__name__)
 
 
 class MagicMirrorFlowHandler(config_entries.ConfigFlow, domain=MAGICMIRROR_DOMAIN):
@@ -60,7 +57,7 @@ class MagicMirrorFlowHandler(config_entries.ConfigFlow, domain=MAGICMIRROR_DOMAI
 
             except aiohttp.ClientError as error:
                 errors["base"] = "cannot_connect"
-                _LOGGER.warning("error=%s. errors=%s", error, errors)
+                LOGGER.warning("error=%s. errors=%s", error, errors)
 
             if errors:
                 return self.async_show_form(

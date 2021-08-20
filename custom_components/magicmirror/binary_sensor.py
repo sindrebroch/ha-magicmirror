@@ -1,6 +1,5 @@
 """Binary sensor file for MagicMirror."""
 
-import logging
 from typing import Final, List, Optional, Tuple
 
 from homeassistant.components.binary_sensor import (
@@ -27,8 +26,6 @@ BINARY_SENSORS: Final[Tuple[BinarySensorEntityDescription, ...]] = (
         icon="mdi:mirror",
     ),
 )
-
-_LOGGER = logging.getLogger(__name__)
 
 
 async def async_setup_entry(

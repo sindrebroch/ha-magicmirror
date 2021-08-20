@@ -1,15 +1,13 @@
 """MagicMirror library."""
 
-import logging
 from typing import Any, Optional
 
 import aiohttp
 
 from homeassistant.const import HTTP_FORBIDDEN, HTTP_OK
 
+from .const import LOGGER
 from .models import MagicMirrorResponse
-
-_LOGGER = logging.getLogger(__name__)
 
 
 # Mirror control
@@ -70,7 +68,7 @@ class MagicMirror:
     async def handle_request(self, response) -> Any:
         """Handle request."""
 
-        _LOGGER.warning("pre handle_request=%s", response)
+        LOGGER.warning("pre handle_request=%s", response)
 
         async with response as resp:
 
@@ -82,14 +80,14 @@ class MagicMirror:
 
             data = await resp.json()
 
-        _LOGGER.warning("post handle_request=%s", data)
+        LOGGER.warning("post handle_request=%s", data)
 
         return data
 
     async def get(self, path: str) -> Any:
         """Get request."""
 
-        _LOGGER.warning("GET path=%s", path)
+        LOGGER.warning("GET path=%s", path)
 
         assert self._session is not None
 
@@ -98,14 +96,14 @@ class MagicMirror:
             headers=self.headers,
         )
 
-        _LOGGER.warning("Response=%s", get)
+        LOGGER.warning("Response=%s", get)
 
         return await self.handle_request(get)
 
     async def post(self, path: str, data: Optional[str] = None) -> Any:
         """Post request."""
 
-        _LOGGER.warning("POST path=%s. data=%s", path, data)
+        LOGGER.warning("POST path=%s. data=%s", path, data)
 
         assert self._session is not None
 
@@ -117,7 +115,7 @@ class MagicMirror:
             ),
         )
 
-        _LOGGER.warning("Response=%s", post)
+        LOGGER.warning("Response=%s", post)
 
         return await self.handle_request(post)
 

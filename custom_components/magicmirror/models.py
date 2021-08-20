@@ -1,11 +1,10 @@
 """Models for MagicMirror."""
 
-import logging
 from typing import Any, Dict
 
 import attr
 
-_LOGGER = logging.getLogger(__name__)
+from .const import LOGGER
 
 
 @attr.s(auto_attribs=True, frozen=True)
@@ -19,7 +18,7 @@ class MagicMirrorResponse:
     def from_dict(data: Dict[str, Any]) -> "MagicMirrorResponse":
         """Transform data to dict."""
 
-        _LOGGER.warning("MagicMirrorResponse from_dict %s", data)
+        LOGGER.warning("MagicMirrorResponse from_dict %s", data)
 
         return MagicMirrorResponse(
             success=bool(data.get("success")),

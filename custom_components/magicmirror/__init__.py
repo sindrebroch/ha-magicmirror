@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 from datetime import timedelta
-import logging
 
 from aiohttp.client_exceptions import ClientConnectorError
 from async_timeout import timeout
@@ -17,7 +16,7 @@ from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.typing import ConfigType
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
-from .const import DOMAIN as MAGICMIRROR_DOMAIN
+from .const import DOMAIN as MAGICMIRROR_DOMAIN, LOGGER
 from .magicmirror import MagicMirror
 from .models import MagicMirrorResponse
 
@@ -42,9 +41,6 @@ SERVICE_MODULE_INSTALLED = "module_installed"  # Create entity based on installe
 SERVICE_MODULE_AVAILABLE = "module_available"
 SERVICE_MODULE_UPDATE = "module_update"
 SERVICE_MODULE_INSTALL = "module_install"
-
-
-_LOGGER = logging.getLogger(__name__)
 
 
 async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
@@ -277,7 +273,7 @@ class MagicMirrorDataUpdateCoordinator(DataUpdateCoordinator):
 
         super().__init__(
             hass,
-            _LOGGER,
+            LOGGER,
             name=MAGICMIRROR_DOMAIN,
             update_interval=update_interval,
         )
@@ -285,7 +281,7 @@ class MagicMirrorDataUpdateCoordinator(DataUpdateCoordinator):
     async def _async_update_data(self) -> dict[str, str]:
         """Update data via library."""
 
-        _LOGGER.warning("Updating coordinator")
+        LOGGER.warning("Updating coordinator")
 
         try:
             async with timeout(10):
@@ -294,10 +290,10 @@ class MagicMirrorDataUpdateCoordinator(DataUpdateCoordinator):
                 )
 
                 if not magicmirror.success:
-                    _LOGGER.warning("Magicmirror failed update %s", magicmirror)
+                    LOGGER.warning("Magicmirror failed update %s", magicmirror)
 
         except (Error, ClientConnectorError) as error:
-            _LOGGER.error("Update error %s", error)
+            LOGGER.error("Update error %s", error)
             raise UpdateFailed(error) from error
 
         return {"monitor_status": magicmirror.monitor}
