@@ -68,7 +68,7 @@ class MagicMirror:
     async def handle_request(self, response) -> Any:
         """Handle request."""
 
-        LOGGER.warning("pre handle_request=%s", response)
+        LOGGER.debug("pre handle_request=%s", response)
 
         async with response as resp:
 
@@ -80,14 +80,14 @@ class MagicMirror:
 
             data = await resp.json()
 
-        LOGGER.warning("post handle_request=%s", data)
+        LOGGER.debug("post handle_request=%s", data)
 
         return data
 
     async def get(self, path: str) -> Any:
         """Get request."""
 
-        LOGGER.warning("GET path=%s", path)
+        LOGGER.debug("GET path=%s", path)
 
         assert self._session is not None
 
@@ -96,14 +96,14 @@ class MagicMirror:
             headers=self.headers,
         )
 
-        LOGGER.warning("Response=%s", get)
+        LOGGER.debug("Response=%s", get)
 
         return await self.handle_request(get)
 
     async def post(self, path: str, data: Optional[str] = None) -> Any:
         """Post request."""
 
-        LOGGER.warning("POST path=%s. data=%s", path, data)
+        LOGGER.debug("POST path=%s. data=%s", path, data)
 
         assert self._session is not None
 
@@ -115,7 +115,7 @@ class MagicMirror:
             ),
         )
 
-        LOGGER.warning("Response=%s", post)
+        LOGGER.debug("Response=%s", post)
 
         return await self.handle_request(post)
 

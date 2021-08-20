@@ -281,7 +281,7 @@ class MagicMirrorDataUpdateCoordinator(DataUpdateCoordinator):
     async def _async_update_data(self) -> dict[str, str]:
         """Update data via library."""
 
-        LOGGER.warning("Updating coordinator")
+        LOGGER.debug("Updating coordinator")
 
         try:
             async with timeout(10):

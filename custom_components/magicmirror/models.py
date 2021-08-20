@@ -18,7 +18,7 @@ class MagicMirrorResponse:
     def from_dict(data: Dict[str, Any]) -> "MagicMirrorResponse":
         """Transform data to dict."""
 
-        LOGGER.warning("MagicMirrorResponse from_dict %s", data)
+        LOGGER.debug("MagicMirrorResponse from_dict %s", data)
 
         return MagicMirrorResponse(
             success=bool(data.get("success")),
