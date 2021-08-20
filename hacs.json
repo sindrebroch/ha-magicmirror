@@ -1,7 +1,7 @@
 {
-    "name": "Magic Mirror",
-    "render_readme": true,
+    "name": "Flexit",
+    "hacs": "1.6.0",
     "domains": ["binary_sensor", "switch"],
-    "homeassistant": "2021.7.0",
-    "iot_class": ["local_polling"]
+    "homeassistant": "2021.8.0",
+    "render_readme": true
 }
