@@ -1,7 +1,7 @@
 """Constants for the MagicMirror integration."""
 
-import logging
+from logging import Logger, getLogger
 
 DOMAIN = "magicmirror"
 
-LOGGER: Logger = logging.getLogger(__package__)
+LOGGER: Logger = getLogger(__package__)
