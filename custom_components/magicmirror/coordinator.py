@@ -52,15 +52,15 @@ class MagicMirrorDataUpdateCoordinator(DataUpdateCoordinator):
 
         try:
             async with timeout(10):
-                magicmirror: MagicMirrorResponse = (
-                    await self.magicmirror.monitor_status()
+                response: MagicMirrorResponse = (
+                    await self.api.monitor_status()
                 )
 
-                if not magicmirror.success:
-                    LOGGER.warning("Magicmirror failed update %s", magicmirror)
+                if not response.success:
+                    LOGGER.warning("Magicmirror failed update %s", response)
 
         except (Error, ClientConnectorError) as error:
             LOGGER.error("Update error %s", error)
             raise UpdateFailed(error) from error
 
-        return {"monitor_status": magicmirror.monitor}
+        return {"monitor_status": response.monitor}
