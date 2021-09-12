@@ -1,6 +1,6 @@
 """Binary sensor file for MagicMirror."""
 
-from typing import Final, List, Optional, Tuple
+from typing import Optional
 
 from homeassistant.components.binary_sensor import (
     BinarySensorEntity,
@@ -8,8 +8,7 @@ from homeassistant.components.binary_sensor import (
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import STATE_ON
-from homeassistant.core import HomeAssistant
-from homeassistant.helpers.entity import DeviceInfo
+from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import (
     CoordinatorEntity,
@@ -19,7 +18,7 @@ from homeassistant.helpers.update_coordinator import (
 from .__init__ import MagicMirrorDataUpdateCoordinator
 from .const import DOMAIN as MAGICMIRROR_DOMAIN
 
-BINARY_SENSORS: Final[Tuple[BinarySensorEntityDescription, ...]] = (
+BINARY_SENSORS: tuple[BinarySensorEntityDescription, ...] = (
     BinarySensorEntityDescription(
         key="monitor_status",
         name="Monitor status",
@@ -37,15 +36,8 @@ async def async_setup_entry(
 
     coordinator: DataUpdateCoordinator = hass.data[MAGICMIRROR_DOMAIN][entry.entry_id]
 
-    binary_sensors: List[MagicMirrorSensor] = []
-
     for binary_sensor_description in BINARY_SENSORS:
-        binary_sensors.append(
-            MagicMirrorSensor(coordinator, binary_sensor_description),
-        )
-
-    async_add_entities(binary_sensors)
-
+        async_add_entities([MagicMirrorSensor(coordinator, binary_sensor_description)])
 
 class MagicMirrorSensor(CoordinatorEntity, BinarySensorEntity):
     """Define a MagicMirror entity."""
@@ -62,25 +54,29 @@ class MagicMirrorSensor(CoordinatorEntity, BinarySensorEntity):
         super().__init__(coordinator)
         self.coordinator = coordinator
         self.entity_description = description
-        self._attr_unique_id = f"{description.key}"
 
-    @property
-    def is_on(self) -> Optional[bool]:
-        """Return true if the binary sensor is on."""
-
-        return (
+        self.sensor_data = (
             True
             if self.coordinator.data[self.entity_description.key] == STATE_ON
             else False
         )
 
+        self._attr_unique_id = f"{description.key}"
+        self._attr_device_info = coordinator._attr_device_info
+    
     @property
-    def device_info(self) -> Optional[DeviceInfo]:
-        """Return the device info."""
+    def is_on(self) -> Optional[bool]:
+        """Return true if the binary sensor is on."""
 
-        return {
-            "identifiers": {(MAGICMIRROR_DOMAIN, "MagicMirror")},
-            "name": "MagicMirror",
-            "model": "MagicMirror",
-            "manufacturer": "",
-        }
+        return self.sensor_data
+
+    @callback
+    def _handle_coordinator_update(self) -> None:
+        """Handle data update."""
+
+        self.sensor_data = (
+            True
+            if self.coordinator.data[self.entity_description.key] == STATE_ON
+            else False
+        )
+        self.async_write_ha_state()

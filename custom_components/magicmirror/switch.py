@@ -1,12 +1,11 @@
 """BinarySensor file for MagicMirror."""
 
-from typing import Any, Final, List, Optional, Tuple
+from typing import Any
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import STATE_ON
-from homeassistant.core import HomeAssistant
+from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity import (
-    DeviceInfo,
     ToggleEntity,
     ToggleEntityDescription,
 )
@@ -16,7 +15,7 @@ from homeassistant.helpers.update_coordinator import CoordinatorEntity
 from .__init__ import MagicMirrorDataUpdateCoordinator
 from .const import DOMAIN as MAGICMIRROR_DOMAIN
 
-SWITCHES: Final[Tuple[ToggleEntityDescription, ...]] = (
+SWITCHES: tuple[ToggleEntityDescription, ...] = (
     ToggleEntityDescription(
         key="monitor_status",
         name="Monitor status",
@@ -32,18 +31,10 @@ async def async_setup_entry(
 ) -> None:
     """Add MagicMirror entities from a config_entry."""
 
-    coordinator: MagicMirrorDataUpdateCoordinator = hass.data[MAGICMIRROR_DOMAIN][
-        entry.entry_id
-    ]
-
-    switches: List[MagicMirrorSwitch] = []
+    coordinator: MagicMirrorDataUpdateCoordinator = hass.data[MAGICMIRROR_DOMAIN][entry.entry_id]
 
     for switch_description in SWITCHES:
-        switches.append(
-            MagicMirrorSwitch(coordinator, switch_description),
-        )
-
-    async_add_entities(switches)
+        async_add_entities([MagicMirrorSwitch(coordinator, switch_description)])
 
 
 class MagicMirrorSwitch(CoordinatorEntity, ToggleEntity):
@@ -60,28 +51,33 @@ class MagicMirrorSwitch(CoordinatorEntity, ToggleEntity):
 
         self.coordinator = coordinator
         self.entity_description = description
-        self._attr_unique_id = f"{description.key}"
 
-    @property
-    def is_on(self) -> bool:
-        """Return true if the switch is on."""
-
-        return (
+        self.sensor_data = (
             True
             if self.coordinator.data[self.entity_description.key] == STATE_ON
             else False
         )
 
-    @property
-    def device_info(self) -> Optional[DeviceInfo]:
-        """Return the device info."""
+        self._attr_unique_id = f"{description.key}"
+        self._attr_device_info = coordinator._attr_device_info
 
-        return {
-            "identifiers": {(MAGICMIRROR_DOMAIN, "MagicMirror")},
-            "name": "MagicMirror",
-            "model": "MagicMirror",
-            "manufacturer": "MagicMirror",
-        }
+    @property
+    def is_on(self) -> bool:
+        """Return true if the switch is on."""
+
+        return self.sensor_data
+
+    @callback
+    def _handle_coordinator_update(self) -> None:
+        """Handle data update."""
+
+        self.sensor_data = (
+            True
+            if self.coordinator.data[self.entity_description.key] == STATE_ON
+            else False
+        )
+        self.async_write_ha_state()
+
 
     async def async_turn_on(self, **kwargs: Any) -> None:
         """Turn the entity on."""

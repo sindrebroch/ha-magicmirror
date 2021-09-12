@@ -42,7 +42,7 @@ API_CONFIG = "api/config"
 SWAGGER = "/api/docs/#/"
 
 
-class MagicMirror:
+class MagicMirrorApiClient:
     """Main class for handling connection with."""
 
     def __init__(

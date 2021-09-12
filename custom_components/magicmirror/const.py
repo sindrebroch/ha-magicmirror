@@ -2,6 +2,8 @@
 
 from logging import Logger, getLogger
 
-DOMAIN = "magicmirror"
-
 LOGGER: Logger = getLogger(__package__)
+
+DOMAIN = "magicmirror"
+PLATFORMS = ["binary_sensor", "switch"]
+
