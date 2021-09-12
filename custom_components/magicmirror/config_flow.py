@@ -12,8 +12,8 @@ from homeassistant.const import CONF_API_KEY, CONF_HOST, CONF_PORT
 from homeassistant.data_entry_flow import FlowResult
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
+from .api import MagicMirrorApiClient
 from .const import DOMAIN as MAGICMIRROR_DOMAIN, LOGGER
-from .magicmirror import MagicMirror
 from .models import MagicMirrorResponse
 
 SCHEMA = vol.Schema(
@@ -45,14 +45,14 @@ class MagicMirrorFlowHandler(config_entries.ConfigFlow, domain=MAGICMIRROR_DOMAI
                 return self.async_abort(reason="already_configured")
 
             session = async_get_clientsession(self.hass)
-            magicmirror = MagicMirror(host, port, api_key, session=session)
+            api = MagicMirrorApiClient(host, port, api_key, session=session)
 
             errors: dict[str, Any] = {}
 
             try:
-                t: MagicMirrorResponse = await magicmirror.api_test()
+                response: MagicMirrorResponse = await api.api_test()
 
-                if not t.success:
+                if not response.success:
                     errors["base"] = "cannot_connect"
 
             except aiohttp.ClientError as error:

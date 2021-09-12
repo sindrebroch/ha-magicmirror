@@ -15,8 +15,8 @@ from homeassistant.helpers.update_coordinator import (
     DataUpdateCoordinator,
 )
 
-from .__init__ import MagicMirrorDataUpdateCoordinator
 from .const import DOMAIN as MAGICMIRROR_DOMAIN
+from .coordinator import MagicMirrorDataUpdateCoordinator
 
 BINARY_SENSORS: tuple[BinarySensorEntityDescription, ...] = (
     BinarySensorEntityDescription(

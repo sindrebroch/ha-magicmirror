@@ -12,8 +12,8 @@ from homeassistant.helpers.entity import (
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
-from .__init__ import MagicMirrorDataUpdateCoordinator
 from .const import DOMAIN as MAGICMIRROR_DOMAIN
+from .coordinator import MagicMirrorDataUpdateCoordinator
 
 SWITCHES: tuple[ToggleEntityDescription, ...] = (
     ToggleEntityDescription(
