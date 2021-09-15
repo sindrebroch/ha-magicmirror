@@ -77,8 +77,8 @@ class QueryResponse:
     """Class representing MagicMirror."""
 
     success: bool
+    result: Any
     query: Query
-    result: bool
 
     @staticmethod
     def from_dict(data: Dict[str, Any]) -> "QueryResponse":
@@ -88,7 +88,7 @@ class QueryResponse:
 
         return QueryResponse(
             success=bool(data.get("success")),
-            result=bool(data.get("result")),
+            result=data.get("result"),
             query=Query.from_dict(data.get("query"))
         )
 
