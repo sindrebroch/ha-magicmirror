@@ -73,7 +73,7 @@ class MagicMirrorNumber(CoordinatorEntity, NumberEntity):
     async def async_set_value(self, value: float) -> None:
         """Update the current value."""
 
-        await self.coordinator.api.brightness(value)
+        await self.coordinator.api.brightness(int(value))
         await self.coordinator.async_request_refresh()
 
     @callback
