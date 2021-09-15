@@ -13,7 +13,7 @@ from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
-from .const import DOMAIN as MAGICMIRROR_DOMAIN
+from .const import DOMAIN as MAGICMIRROR_DOMAIN, LOGGER
 from .coordinator import MagicMirrorDataUpdateCoordinator
 
 NUMBERS: tuple[NumberEntityDescription, ...] = (
@@ -65,7 +65,10 @@ class MagicMirrorNumber(CoordinatorEntity, NumberEntity):
         return self.sensor_data
 
     def get_sensor_data(self) -> float:
-        return cast(float, self.coordinator.data[self.entity_description.key])
+        LOGGER.debug("Data for number-entity:")
+        LOGGER.debug("coordinator_data=%s", self.coordinator.data)
+        LOGGER.debug("key=%s", self.coordinator.data[self.entity_description.key])
+        return self.coordinator.data[self.entity_description.key]
 
     async def async_set_value(self, value: float) -> None:
         """Update the current value."""
