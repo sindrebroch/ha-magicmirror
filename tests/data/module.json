@@ -1,0 +1,84 @@
+{
+  "success": true,
+  "data": [
+      {
+          "index": 0,
+          "identifier": "module_0_alert",
+          "name": "alert",
+          "path": "modules/default/alert/",
+          "file": "alert.js",
+          "configDeepMerge": false,
+          "config": {
+              "effect": "slide",
+              "alert_effect": "jelly",
+              "display_time": 3500,
+              "position": "center",
+              "welcome_message": false
+          },
+          "classes": "alert",
+          "hidden": false,
+          "lockStrings": [],
+          "actions": {
+              "showalert": {
+                  "notification": "SHOW_ALERT",
+                  "guessed": true
+              },
+              "hidealert": {
+                  "notification": "HIDE_ALERT",
+                  "guessed": true
+              }
+          }
+      },
+      {
+          "index": 1,
+          "identifier": "module_1_updatenotification",
+          "name": "updatenotification",
+          "path": "modules/default/updatenotification/",
+          "file": "updatenotification.js",
+          "position": "top_bar",
+          "configDeepMerge": false,
+          "config": {
+              "updateInterval": 600000,
+              "refreshInterval": 86400000,
+              "ignoreModules": [],
+              "timeout": 5000
+          },
+          "classes": "updatenotification",
+          "hidden": false,
+          "lockStrings": []
+      },
+      {
+          "index": 2,
+          "identifier": "module_2_clock",
+          "name": "clock",
+          "path": "modules/default/clock/",
+          "file": "clock.js",
+          "position": "top_left",
+          "configDeepMerge": false,
+          "config": {
+              "displayType": "digital",
+              "timeFormat": 24,
+              "displaySeconds": true,
+              "showPeriod": true,
+              "showPeriodUpper": false,
+              "clockBold": false,
+              "showDate": true,
+              "showWeek": false,
+              "dateFormat": "dddd, LL",
+              "analogSize": "200px",
+              "analogFace": "simple",
+              "analogPlacement": "bottom",
+              "analogShowDate": "top",
+              "secondsColor": "#888888",
+              "timezone": null,
+              "showSunTimes": false,
+              "showMoonTimes": false,
+              "lat": 0,
+              "lon": 0
+          },
+          "classes": "clock",
+          "hidden": false,
+          "lockStrings": []
+      }
+  ]
+}

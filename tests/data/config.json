@@ -1,0 +1,34 @@
+{
+  "success": true,
+  "query": {
+      "data": "config"
+  },
+  "data": {
+      "address": "0.0.0.0",
+      "port": 8080,
+      "basePath": "/",
+      "kioskmode": false,
+      "electronOptions": {},
+      "ipWhitelist": [],
+      "language": "en",
+      "logLevel": [
+          "INFO",
+          "LOG",
+          "WARN",
+          "ERROR"
+      ],
+      "timeFormat": 24,
+      "units": "metric",
+      "zoom": 1,
+      "customCss": "css/custom.css",
+      "modules": [{}],
+      "paths": {
+          "modules": "modules",
+          "vendor": "vendor"
+      },
+      "useHttps": false,
+      "httpsPrivateKey": "",
+      "httpsCertificate": "",
+      "locale": ""
+  }
+}
