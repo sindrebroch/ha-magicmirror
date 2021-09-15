@@ -25,7 +25,7 @@ BINARY_SENSORS: tuple[BinarySensorEntityDescription, ...] = (
     BinarySensorEntityDescription(
         key=Entity.UPDATE_AVAILABLE.value,
         name="Update Available",
-        icon="mdi:arrow-up-box",
+        icon="mdi:arrow-up-box", # TODO different icon for on / off
     ),
 )
 
