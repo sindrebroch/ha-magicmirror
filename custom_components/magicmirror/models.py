@@ -52,13 +52,24 @@ class MonitorResponse:
 
         return MonitorResponse(
             success=bool(data.get("success")),
-            monitor=data.get("monitor", ""),
+            monitor=data.get("monitor"),
         )
 
+@attr.s(auto_attribs=True)
 class Query:
     """Class representing Query"""
 
     data: str
+
+    @staticmethod
+    def from_dict(query: Dict[str, Any]) -> "Query":
+        """Transform data to dict."""
+
+        LOGGER.debug("Query=%s", query)
+
+        return Query(
+            data=query.get("data")
+        )
 
 
 @attr.s(auto_attribs=True)
@@ -78,7 +89,7 @@ class QueryResponse:
         return QueryResponse(
             success=bool(data.get("success")),
             result=bool(data.get("result")),
-            query=data.get("query").__getattribute__("data")
+            query=Query.from_dict(data.get("query"))
         )
 
 
