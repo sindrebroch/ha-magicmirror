@@ -60,8 +60,8 @@ class MagicMirrorDataUpdateCoordinator(DataUpdateCoordinator):
 
                 return {
                     Entity.MONITOR_STATUS.value: monitor.monitor,
-                    Entity.UPDATE_AVAILABLE.value: update.result,
-                    Entity.BRIGHTNESS.value: brightness.result,
+                    Entity.UPDATE_AVAILABLE.value: bool(update.result),
+                    Entity.BRIGHTNESS.value: int(brightness.result),
                 }
 
         except (Error, ClientConnectorError) as error:
