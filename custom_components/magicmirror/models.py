@@ -7,6 +7,13 @@ import attr
 
 from .const import LOGGER
 
+class Entity(Enum):
+    """Enum for storing Entity."""
+
+    MONITOR_STATUS = "monitor_status"
+    UPDATE_AVAILABLE = "update_available"
+    BRIGHTNESS = "brightness"
+
 class Services(Enum):
     """Enum for storing services."""
 
@@ -31,19 +38,62 @@ class Services(Enum):
     MODULE_INSTALL = "module_install"
 
 @attr.s(auto_attribs=True)
-class MagicMirrorResponse:
+class MonitorResponse:
     """Class representing MagicMirror."""
 
     success: bool
     monitor: str
 
     @staticmethod
-    def from_dict(data: Dict[str, Any]) -> "MagicMirrorResponse":
+    def from_dict(data: Dict[str, Any]) -> "MonitorResponse":
         """Transform data to dict."""
 
-        LOGGER.debug("MagicMirrorResponse=%s", data)
+        LOGGER.debug("MonitorResponse=%s", data)
 
-        return MagicMirrorResponse(
+        return MonitorResponse(
             success=bool(data.get("success")),
             monitor=data.get("monitor", ""),
+        )
+
+class Query:
+    """Class representing Query"""
+
+    data: str
+
+
+@attr.s(auto_attribs=True)
+class QueryResponse:
+    """Class representing MagicMirror."""
+
+    success: bool
+    query: Query
+    result: bool
+
+    @staticmethod
+    def from_dict(data: Dict[str, Any]) -> "QueryResponse":
+        """Transform data to dict."""
+
+        LOGGER.debug("QueryResponse=%s", data)
+
+        return QueryResponse(
+            success=bool(data.get("success")),
+            result=bool(data.get("result")),
+            query=data.get("query").__getattribute__("data")
+        )
+
+
+@attr.s(auto_attribs=True)
+class GenericResponse:
+    """Class representing MagicMirror."""
+
+    success: bool
+
+    @staticmethod
+    def from_dict(data: Dict[str, Any]) -> "GenericResponse":
+        """Transform data to dict."""
+
+        LOGGER.debug("GenericResponse=%s", data)
+
+        return GenericResponse(
+            success=bool(data.get("success")),
         )

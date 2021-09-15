@@ -14,7 +14,7 @@ from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
 from .api import MagicMirrorApiClient
 from .const import DOMAIN as MAGICMIRROR_DOMAIN, LOGGER
-from .models import MagicMirrorResponse
+from .models import GenericResponse
 
 SCHEMA = vol.Schema(
     {
@@ -50,7 +50,7 @@ class MagicMirrorFlowHandler(config_entries.ConfigFlow, domain=MAGICMIRROR_DOMAI
             errors: dict[str, Any] = {}
 
             try:
-                response: MagicMirrorResponse = await api.api_test()
+                response: GenericResponse = await api.api_test()
 
                 if not response.success:
                     errors["base"] = "cannot_connect"

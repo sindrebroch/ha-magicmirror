@@ -14,7 +14,7 @@ from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, Upda
 
 from .api import MagicMirrorApiClient
 from .const import DOMAIN as MAGICMIRROR_DOMAIN, LOGGER
-from .models import MagicMirrorResponse
+from .models import Entity, MonitorResponse, QueryResponse
 
 
 class MagicMirrorDataUpdateCoordinator(DataUpdateCoordinator):
@@ -28,9 +28,6 @@ class MagicMirrorDataUpdateCoordinator(DataUpdateCoordinator):
         """Initialize."""
 
         self.api = api
-
-        update_interval = timedelta(minutes=1)
-
         self._attr_device_info: DeviceInfo = {
             "name": "MagicMirror",
             "model": "MagicMirror",
@@ -42,25 +39,31 @@ class MagicMirrorDataUpdateCoordinator(DataUpdateCoordinator):
             hass,
             LOGGER,
             name=MAGICMIRROR_DOMAIN,
-            update_interval=update_interval,
+            update_interval=timedelta(minutes=1),
         )
 
     async def _async_update_data(self) -> dict[str, str]:
         """Update data via library."""
 
-        LOGGER.debug("Updating coordinator")
-
         try:
             async with timeout(10):
-                response: MagicMirrorResponse = (
-                    await self.api.monitor_status()
-                )
+                monitor: MonitorResponse = await self.api.monitor_status()
+                update: QueryResponse = await self.api.update_available()
+                brightness: QueryResponse = await self.api.get_brightness()
 
-                if not response.success:
-                    LOGGER.warning("Magicmirror failed update %s", response)
+                if not monitor.success:
+                    LOGGER.warning("Failed to fetch monitor-status for MagicMirror")
+                if not update.success:
+                    LOGGER.warning("Failed to fetch update-status for MagicMirror")
+                if not brightness.success:
+                    LOGGER.warning("Failed to fetch brightness for MagicMirror")
+
+                return {
+                    Entity.MONITOR_STATUS.value: monitor.monitor,
+                    Entity.UPDATE_AVAILABLE.value: update.result,
+                    Entity.BRIGHTNESS.value: brightness.result,
+                }
 
         except (Error, ClientConnectorError) as error:
             LOGGER.error("Update error %s", error)
             raise UpdateFailed(error) from error
-
-        return {"monitor_status": response.monitor}

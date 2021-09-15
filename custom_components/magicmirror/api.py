@@ -7,7 +7,7 @@ import aiohttp
 from homeassistant.const import HTTP_FORBIDDEN, HTTP_OK
 
 from .const import LOGGER
-from .models import MagicMirrorResponse
+from .models import GenericResponse, MonitorResponse, QueryResponse
 
 
 # Mirror control
@@ -34,7 +34,7 @@ API_MODULE_INSTALLED = f"{API_MODULE}/installed"
 API_MODULE_AVAILABLE = f"{API_MODULE}/available"
 API_UPDATE_MODULE = "api/update"
 API_INSTALL_MODULE = "api/install"
-API_UPDATE_AVAILBALE = "/api/mmUpdateAvailable"  #
+API_UPDATE_AVAILBALE = "/api/mmUpdateAvailable" 
 
 # API
 API_CONFIG = "api/config"
@@ -119,25 +119,29 @@ class MagicMirrorApiClient:
 
         return await self.handle_request(post)
 
-    async def api_test(self) -> MagicMirrorResponse:
+    async def api_test(self) -> GenericResponse:
         """Test api."""
-        return MagicMirrorResponse.from_dict(await self.get(API_TEST))
+        return GenericResponse.from_dict(await self.get(API_TEST))
 
-    async def monitor_status(self) -> MagicMirrorResponse:
+    async def update_available(self) -> QueryResponse:
+        """Test api."""
+        return QueryResponse.from_dict(await self.get(API_UPDATE_AVAILBALE))
+
+    async def monitor_status(self) -> MonitorResponse:
         """Get monitor status."""
-        return MagicMirrorResponse.from_dict(await self.get(API_MONITOR_STATUS))
+        return MonitorResponse.from_dict(await self.get(API_MONITOR_STATUS))
 
     async def monitor_on(self) -> Any:
         """Turn on monitor."""
-        return MagicMirrorResponse.from_dict(await self.get(API_MONITOR_ON))
+        return MonitorResponse.from_dict(await self.get(API_MONITOR_ON))
 
     async def monitor_off(self) -> Any:
         """Turn off monitor."""
-        return MagicMirrorResponse.from_dict(await self.get(API_MONITOR_OFF))
+        return MonitorResponse.from_dict(await self.get(API_MONITOR_OFF))
 
     async def monitor_toggle(self) -> Any:
         """Toggle monitor."""
-        return MagicMirrorResponse.from_dict(await self.get(API_MONITOR_TOGGLE))
+        return MonitorResponse.from_dict(await self.get(API_MONITOR_TOGGLE))
 
     async def shutdown(self) -> Any:
         """Shutdown."""
@@ -170,6 +174,10 @@ class MagicMirrorApiClient:
     async def brightness(self, brightness: str) -> Any:
         """Brightness."""
         return await self.get(f"{API_BRIGHTNESS}/{brightness}")
+
+    async def get_brightness(self) -> QueryResponse:
+        """Brightness."""
+        return QueryResponse.from_dict(await self.get(API_BRIGHTNESS))
 
     async def module(self, moduleName: str) -> Any:
         """Endpoint for module."""

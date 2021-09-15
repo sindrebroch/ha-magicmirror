@@ -1,5 +1,6 @@
 """BinarySensor file for MagicMirror."""
 
+from custom_components.magicmirror.models import Entity
 from typing import Any
 
 from homeassistant.config_entries import ConfigEntry
@@ -17,8 +18,8 @@ from .coordinator import MagicMirrorDataUpdateCoordinator
 
 SWITCHES: tuple[ToggleEntityDescription, ...] = (
     ToggleEntityDescription(
-        key="monitor_status",
-        name="Monitor status",
+        key=Entity.MONITOR_STATUS.value,
+        name="MagicMirror Monitor",
         icon="mdi:mirror",
     ),
 )

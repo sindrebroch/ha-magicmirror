@@ -1,14 +1,14 @@
 """Binary sensor file for MagicMirror."""
 
 from custom_components.magicmirror.models import Entity
-from typing import Optional
+from typing import cast
 
-from homeassistant.components.binary_sensor import (
-    BinarySensorEntity,
-    BinarySensorEntityDescription,
+from homeassistant.components.number import (
+    NumberEntity,
+    NumberEntityDescription,
 )
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import STATE_ON, STATE_OFF
+from homeassistant.const import PERCENTAGE
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
@@ -16,16 +16,12 @@ from homeassistant.helpers.update_coordinator import CoordinatorEntity
 from .const import DOMAIN as MAGICMIRROR_DOMAIN
 from .coordinator import MagicMirrorDataUpdateCoordinator
 
-BINARY_SENSORS: tuple[BinarySensorEntityDescription, ...] = (
-    BinarySensorEntityDescription(
-        key=Entity.MONITOR_STATUS.value,
-        name="Magic Mirror Monitor",
-        icon="mdi:mirror",
-    ),
-    BinarySensorEntityDescription(
-        key=Entity.UPDATE_AVAILABLE.value,
-        name="Update Available",
-        icon="mdi:arrow-up-box",
+NUMBERS: tuple[NumberEntityDescription, ...] = (
+    NumberEntityDescription(
+        key=Entity.BRIGHTNESS.value,
+        name="Magic Mirror Brightness",
+        icon="mdi:sun",
+        unit_of_measurement=PERCENTAGE
     ),
 )
 
@@ -39,10 +35,10 @@ async def async_setup_entry(
 
     coordinator: MagicMirrorDataUpdateCoordinator = hass.data[MAGICMIRROR_DOMAIN][entry.entry_id]
 
-    for binary_sensor_description in BINARY_SENSORS:
-        async_add_entities([MagicMirrorSensor(coordinator, binary_sensor_description)])
+    for entity_description in NUMBERS:
+        async_add_entities([MagicMirrorNumber(coordinator, entity_description)])
 
-class MagicMirrorSensor(CoordinatorEntity, BinarySensorEntity):
+class MagicMirrorNumber(CoordinatorEntity, NumberEntity):
     """Define a MagicMirror entity."""
 
     coordinator: MagicMirrorDataUpdateCoordinator
@@ -50,7 +46,7 @@ class MagicMirrorSensor(CoordinatorEntity, BinarySensorEntity):
     def __init__(
         self,
         coordinator: MagicMirrorDataUpdateCoordinator,
-        description: BinarySensorEntityDescription,
+        description: NumberEntityDescription,
     ) -> None:
         """Initialize."""
 
@@ -63,19 +59,19 @@ class MagicMirrorSensor(CoordinatorEntity, BinarySensorEntity):
         self._attr_unique_id = f"{description.key}"
         self._attr_device_info = coordinator._attr_device_info
     
-    @property
-    def is_on(self) -> Optional[bool]:
-        """Return true if the binary sensor is on."""
 
+    @property
+    def value(self) -> float:
         return self.sensor_data
 
-    def get_sensor_data(self) -> bool:
-        if self.coordinator.data[self.entity_description.key] == STATE_ON:
-            return True
-        elif self.coordinator.data[self.entity_description.key] == STATE_OFF:
-            return False
-        else:
-            return self.coordinator.data[self.entity_description.key]
+    def get_sensor_data(self) -> float:
+        return cast(float, self.coordinator.data[self.entity_description.key])
+
+    async def async_set_value(self, value: float) -> None:
+        """Update the current value."""
+
+        await self.coordinator.api.brightness(value)
+        await self.coordinator.async_request_refresh()
 
     @callback
     def _handle_coordinator_update(self) -> None:
