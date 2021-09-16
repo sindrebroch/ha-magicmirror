@@ -18,11 +18,6 @@ from .coordinator import MagicMirrorDataUpdateCoordinator
 
 BINARY_SENSORS: tuple[BinarySensorEntityDescription, ...] = (
     BinarySensorEntityDescription(
-        key=Entity.MONITOR_STATUS.value,
-        name="Magic Mirror Monitor",
-        icon="mdi:mirror",
-    ),
-    BinarySensorEntityDescription(
         key=Entity.UPDATE_AVAILABLE.value,
         name="Update Available",
         icon="mdi:arrow-up-box", # TODO different icon for on / off
