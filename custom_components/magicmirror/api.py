@@ -87,12 +87,13 @@ class MagicMirrorApiClient:
     async def get(self, path: str) -> Any:
         """Get request."""
 
-        LOGGER.debug("GET path=%s", path)
+        URL = f"{self.base_url}/{path}"
+        LOGGER.debug("GET url=%s. headers=%s", URL, self.headers)
 
         assert self._session is not None
 
         get = await self._session.get(
-            url=f"{self.base_url}/{path}",
+            url=URL,
             headers=self.headers,
         )
 
@@ -103,13 +104,14 @@ class MagicMirrorApiClient:
     async def post(self, path: str, data: Optional[str] = None) -> Any:
         """Post request."""
 
-        LOGGER.debug("POST path=%s. data=%s", path, data)
+        URL = f"{self.base_url}/{path}"
+        LOGGER.debug("POST url=%s. data=%s. headers=%s", URL, data, self.headers)
 
         assert self._session is not None
 
         post = (
             await self._session.post(
-                url=f"{self.base_url}/{path}",
+                url=URL,
                 headers=self.headers,
                 data=data,
             ),
