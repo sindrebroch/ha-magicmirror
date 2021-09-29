@@ -125,10 +125,6 @@ class MagicMirrorApiClient:
         """Test api."""
         return GenericResponse.from_dict(await self.get(API_TEST))
 
-    async def update_available(self) -> QueryResponse:
-        """Test api."""
-        return false
-
     async def monitor_status(self) -> MonitorResponse:
         """Get monitor status."""
         return MonitorResponse.from_dict(await self.get(API_MONITOR_STATUS))
