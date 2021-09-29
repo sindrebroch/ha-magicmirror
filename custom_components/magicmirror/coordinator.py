@@ -48,19 +48,15 @@ class MagicMirrorDataUpdateCoordinator(DataUpdateCoordinator):
         try:
             async with timeout(10):
                 monitor: MonitorResponse = await self.api.monitor_status()
-                update: QueryResponse = await self.api.update_available()
                 brightness: QueryResponse = await self.api.get_brightness()
 
                 if not monitor.success:
                     LOGGER.warning("Failed to fetch monitor-status for MagicMirror")
-                if not update.success:
-                    LOGGER.warning("Failed to fetch update-status for MagicMirror")
                 if not brightness.success:
                     LOGGER.warning("Failed to fetch brightness for MagicMirror")
 
                 return {
                     Entity.MONITOR_STATUS.value: monitor.monitor,
-                    Entity.UPDATE_AVAILABLE.value: bool(update.result),
                     Entity.BRIGHTNESS.value: int(brightness.result),
                 }
 
