@@ -25,7 +25,7 @@ Requires [MMM-Remote-Control](https://github.com/Jopyth/MMM-Remote-Control) inst
 4. Configure the `MagicMirror`-integration.
 
 ## TODO
-- [ ] Add Number-entity for brightness
+- [X] Add Number-entity for brightness
 - [ ] Handle installed_modules, and create a toggle to show/hide modules
 - [ ] Binary sensor for update_available
 
