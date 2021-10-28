@@ -77,8 +77,7 @@ class MagicMirrorSwitch(CoordinatorEntity, ToggleEntity):
             if self.coordinator.data[self.entity_description.key] == STATE_ON
             else False
         )
-        self.async_write_ha_state()
-
+        super()._handle_coordinator_update()
 
     async def async_turn_on(self, **kwargs: Any) -> None:
         """Turn the entity on."""

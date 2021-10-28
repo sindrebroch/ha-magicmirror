@@ -81,4 +81,4 @@ class MagicMirrorNumber(CoordinatorEntity, NumberEntity):
         """Handle data update."""
 
         self.sensor_data = self.get_sensor_data()
-        self.async_write_ha_state()
+        super()._handle_coordinator_update()
