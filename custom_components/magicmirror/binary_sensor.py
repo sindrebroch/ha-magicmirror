@@ -8,7 +8,7 @@ from homeassistant.components.binary_sensor import (
     BinarySensorEntityDescription,
 )
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import STATE_ON, STATE_OFF
+from homeassistant.const import STATE_ON, STATE_OFF, ENTITY_CATEGORY_DIAGNOSTIC
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
@@ -21,9 +21,9 @@ BINARY_SENSORS: tuple[BinarySensorEntityDescription, ...] = (
         key=Entity.UPDATE_AVAILABLE.value,
         name="Update Available",
         icon="mdi:arrow-up-box", # TODO different icon for on / off
+        entity_category=ENTITY_CATEGORY_DIAGNOSTIC
     ),
 )
-
 
 async def async_setup_entry(
     hass: HomeAssistant,
