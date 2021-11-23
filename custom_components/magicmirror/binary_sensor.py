@@ -33,11 +33,12 @@ async def async_setup_entry(
     """Add MagicMirror entities from a config_entry."""
 
     coordinator: MagicMirrorDataUpdateCoordinator = hass.data[MAGICMIRROR_DOMAIN][entry.entry_id]
+        
+    async_add_entities(
+        MagicMirrorBinarySensor(coordinator, description) for description in BINARY_SENSORS
+    )
 
-    for binary_sensor_description in BINARY_SENSORS:
-        async_add_entities([MagicMirrorSensor(coordinator, binary_sensor_description)])
-
-class MagicMirrorSensor(CoordinatorEntity, BinarySensorEntity):
+class MagicMirrorBinarySensor(CoordinatorEntity, BinarySensorEntity):
     """Define a MagicMirror entity."""
 
     coordinator: MagicMirrorDataUpdateCoordinator
