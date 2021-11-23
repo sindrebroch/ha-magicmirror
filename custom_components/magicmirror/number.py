@@ -35,8 +35,9 @@ async def async_setup_entry(
 
     coordinator: MagicMirrorDataUpdateCoordinator = hass.data[MAGICMIRROR_DOMAIN][entry.entry_id]
 
-    for entity_description in NUMBERS:
-        async_add_entities([MagicMirrorNumber(coordinator, entity_description)])
+    async_add_entities(
+        MagicMirrorNumber(coordinator, description) for description in NUMBERS
+    )
 
 class MagicMirrorNumber(CoordinatorEntity, NumberEntity):
     """Define a MagicMirror entity."""
