@@ -33,9 +33,10 @@ async def async_setup_entry(
     """Add MagicMirror entities from a config_entry."""
 
     coordinator: MagicMirrorDataUpdateCoordinator = hass.data[MAGICMIRROR_DOMAIN][entry.entry_id]
-
-    for switch_description in SWITCHES:
-        async_add_entities([MagicMirrorSwitch(coordinator, switch_description)])
+        
+    async_add_entities(
+        MagicMirrorSwitch(coordinator, description) for description in SWITCHES
+    )
 
 
 class MagicMirrorSwitch(CoordinatorEntity, ToggleEntity):
