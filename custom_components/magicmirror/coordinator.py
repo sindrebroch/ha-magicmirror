@@ -33,7 +33,7 @@ class MagicMirrorDataUpdateCoordinator(DataUpdateCoordinator):
             model="MagicMirror",
             manufacturer="MagicMirror",
             identifiers={(MAGICMIRROR_DOMAIN, "MagicMirror")},
-            configuration_url="{api.base_url}/remote.html",
+            configuration_url=f"{api.base_url}/remote.html",
         )
 
         super().__init__(
