@@ -1,10 +1,9 @@
 """MagicMirror library."""
 
+from http import HTTPStatus
 from typing import Any, Optional
 
 import aiohttp
-
-from homeassistant.const import HTTP_FORBIDDEN, HTTP_OK
 
 from .const import LOGGER
 from .models import GenericResponse, MonitorResponse, QueryResponse
@@ -72,11 +71,11 @@ class MagicMirrorApiClient:
 
         async with response as resp:
 
-            if resp.status == HTTP_FORBIDDEN:
+            if resp.status == HTTPStatus.FORBIDDEN:
                 raise Exception(f"Forbidden {resp}")  # Probably need API-key
 
-            if resp.status != HTTP_OK:
-                raise Exception(f"Response not HTTP_OK {resp}")
+            if resp.status != HTTPStatus.OK:
+                raise Exception(f"Response not 200 OK {resp}")
 
             data = await resp.json()
 
