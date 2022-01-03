@@ -31,6 +31,7 @@ Requires [MMM-Remote-Control](https://github.com/Jopyth/MMM-Remote-Control) inst
 - [ ] Handle installed_modules, and create a toggle to show/hide modules
 - [ ] Add notify-service
 - [ ] Add Button-entity for reboot/refresh/restart/shutdown
+- [ ] Add Button-entity to update if possible
 
 ## Features
 ### Binary sensor
