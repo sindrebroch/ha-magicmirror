@@ -1,6 +1,8 @@
 """The MagicMirror integration."""
 from __future__ import annotations
 
+import asyncio
+
 from datetime import timedelta
 
 from aiohttp.client_exceptions import ClientConnectorError
@@ -48,9 +50,15 @@ class MagicMirrorDataUpdateCoordinator(DataUpdateCoordinator):
 
         try:
             async with timeout(10):
-                monitor: MonitorResponse = await self.api.monitor_status()
-                update: QueryResponse = await self.api.update_available()
-                brightness: QueryResponse = await self.api.get_brightness()
+                req = await asyncio.gather(
+                    self.api.update_available(),
+                    self.api.monitor_status(),
+                    self.api.get_brightness(),
+                )
+
+                update: QueryResponse = req[0]
+                monitor: MonitorResponse = req[1]
+                brightness: QueryResponse = req[2]
 
                 if not monitor.success:
                     LOGGER.warning("Failed to fetch monitor-status for MagicMirror")
