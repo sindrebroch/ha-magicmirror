@@ -84,10 +84,12 @@ class MagicMirrorSwitch(CoordinatorEntity, ToggleEntity):
         """Turn the entity on."""
 
         await self.coordinator.api.monitor_on()
+        self.sensor_data = True
         await self.coordinator.async_request_refresh()
 
     async def async_turn_off(self, **kwargs: Any) -> None:
         """Turn the entity off."""
 
         await self.coordinator.api.monitor_off()
+        self.sensor_data = False
         await self.coordinator.async_request_refresh()
