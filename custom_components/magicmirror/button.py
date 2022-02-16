@@ -31,7 +31,7 @@ async def async_setup_entry(
                 coordinator,
                 ButtonEntityDescription(
                     key=Entity.SHUTDOWN.value,
-                    name="MagicMirror Shutdown",
+                    name="MagicMirror Shutdown Host",
                     icon="mdi:power",
                 ),
             ),
@@ -39,7 +39,7 @@ async def async_setup_entry(
                 coordinator,
                 ButtonEntityDescription(
                     key=Entity.RESTART.value,
-                    name="MagicMirror Restart",
+                    name="MagicMirror Restart MagicMirror",
                     icon="mdi:restart",
                     device_class=ButtonDeviceClass.RESTART,
                 ),
@@ -48,7 +48,7 @@ async def async_setup_entry(
                 coordinator,
                 ButtonEntityDescription(
                     key=Entity.REBOOT.value,
-                    name="MagicMirror Reboot",
+                    name="MagicMirror Reboot Host",
                     icon="mdi:restart",
                     device_class=ButtonDeviceClass.RESTART,
                 ),
@@ -57,7 +57,7 @@ async def async_setup_entry(
                 coordinator,
                 ButtonEntityDescription(
                     key=Entity.REFRESH.value,
-                    name="MagicMirror Refresh",
+                    name="MagicMirror Refresh Browser",
                     icon="mdi:refresh",
                 ),
             ),

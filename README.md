@@ -45,10 +45,10 @@ Requires [MMM-Remote-Control](https://github.com/Jopyth/MMM-Remote-Control) inst
 - Monitor on/off
 
 ### Button
-- reboot
-- restart
-- shutdown
-- refresh
+- shutdown host
+- reboot host
+- restart magicmirror
+- refresh browser
 
 ### Services
 - notification
