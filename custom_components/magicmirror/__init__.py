@@ -3,13 +3,28 @@ from __future__ import annotations
 
 from homeassistant.core import HomeAssistant
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import CONF_API_KEY, CONF_HOST, CONF_PORT
+from homeassistant.const import (
+    CONF_API_KEY,
+    CONF_HOST,
+    CONF_PORT,
+    CONF_NAME,
+    Platform,
+)
+from homeassistant.helpers import discovery
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
+from homeassistant.helpers.typing import ConfigType
 
 from .api import MagicMirrorApiClient
-from .const import DOMAIN, PLATFORMS
+from .const import ATTR_CONFIG_ENTRY_ID, DATA_HASS_CONFIG, DOMAIN, LOGGER, PLATFORMS
 from .coordinator import MagicMirrorDataUpdateCoordinator
 from .services import async_unload_services, async_register_services
+
+
+async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
+    """Set up the MagicMirror component."""
+
+    hass.data[DATA_HASS_CONFIG] = config
+    return True
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
@@ -32,9 +47,29 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     hass.config_entries.async_setup_platforms(entry, PLATFORMS)
 
+    await async_setup_notify(hass, entry)
+
     await async_register_services(hass, api)
 
     return True
+
+
+async def async_setup_notify(hass: HomeAssistant, entry: ConfigEntry) -> bool:
+    """Setup notify platform."""
+    # set up notify platform, no entry support for notify component yet,
+    # have to use discovery to load platform.
+    hass.async_create_task(
+        discovery.async_load_platform(
+            hass,
+            Platform.NOTIFY,
+            DOMAIN,
+            {
+                CONF_NAME: DOMAIN,
+                ATTR_CONFIG_ENTRY_ID: entry.entry_id,
+            },
+            hass.data[DATA_HASS_CONFIG],
+        )
+    )
 
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
@@ -54,4 +89,3 @@ async def async_reload_entry(hass: HomeAssistant, entry: ConfigEntry) -> None:
     """Reload config entry."""
     await async_unload_entry(hass, entry)
     await async_setup_entry(hass, entry)
-    # TODO unload and register services?

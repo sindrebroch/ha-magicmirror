@@ -50,6 +50,17 @@ Requires [MMM-Remote-Control](https://github.com/Jopyth/MMM-Remote-Control) inst
 - restart magicmirror
 - refresh browser
 
+### Notify
+```
+service: notify.magicmirror
+data:
+  title: Title      # optional
+  message: Message  # required
+  data:
+    timer: 5000     # default, optional
+    dropdown: False # default, optional
+```
+
 ### Services
 - notification
 - alert

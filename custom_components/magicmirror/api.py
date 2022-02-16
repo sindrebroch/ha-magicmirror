@@ -221,7 +221,7 @@ class MagicMirrorApiClient:
     ) -> Any:
         """Notification screen."""
 
-        type = "&type=notification" if dropdown else ""
+        alert_type = "&type=notification" if dropdown else ""
         return await self.get(
-            f"{API_MODULE}/alert/showalert?title={title}&message={message}&timer={timer}{type}"
+            f"{API_MODULE}/alert/showalert?title={title}&message={message}&timer={timer}{alert_type}"
         )
