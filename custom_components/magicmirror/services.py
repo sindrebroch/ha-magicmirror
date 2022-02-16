@@ -46,36 +46,6 @@ async def async_register_services(
         async_monitor_toggle,
     )
 
-    async def async_shutdown(_):
-        """Shutdown MagicMirror."""
-        await api.shutdown()
-
-    hass.services.async_register(
-        DOMAIN,
-        Services.SHUTDOWN.value,
-        async_shutdown,
-    )
-
-    async def async_reboot(_):
-        """Reboot MagicMirror."""
-        await api.reboot()
-
-    hass.services.async_register(
-        DOMAIN,
-        Services.REBOOT.value,
-        async_reboot,
-    )
-
-    async def async_restart(_):
-        """Restart MagicMirror."""
-        await api.restart()
-
-    hass.services.async_register(
-        DOMAIN,
-        Services.RESTART.value,
-        async_restart,
-    )
-
     async def async_notification(service: ServiceCall):
         """Notification MagicMirror."""
         await api.alert(
@@ -150,10 +120,6 @@ async def async_unload_services(hass: HomeAssistant) -> bool:
     hass.services.async_remove(DOMAIN, Services.MONITOR_ON.value)
     hass.services.async_remove(DOMAIN, Services.MONITOR_OFF.value)
     hass.services.async_remove(DOMAIN, Services.MONITOR_TOGGLE.value)
-    hass.services.async_remove(DOMAIN, Services.SHUTDOWN.value)
-    hass.services.async_remove(DOMAIN, Services.REBOOT.value)
-    hass.services.async_remove(DOMAIN, Services.RESTART.value)
-    hass.services.async_remove(DOMAIN, Services.REFRESH.value)
     hass.services.async_remove(DOMAIN, Services.BRIGHTNESS.value)
     hass.services.async_remove(DOMAIN, Services.NOTIFICATION.value)
     hass.services.async_remove(DOMAIN, Services.ALERT.value)

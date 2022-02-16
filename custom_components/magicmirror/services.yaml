@@ -10,22 +10,6 @@ monitor_toggle:
   name: Toggle monitor
   description: Toggle monitor for Magic Mirror
 
-shutdown:
-  name: Shutdown
-  description: Shutdown Magic Mirror
-
-reboot:
-  name: Reboot
-  description: Reboot Magic Mirror
-
-restart:
-  name: Restart
-  description: Restart Magic Mirror
-
-refresh:
-  name: refresh
-  description: refresh Magic Mirror
-
 brightness:
   name: brightness
   description: brightness Magic Mirror
