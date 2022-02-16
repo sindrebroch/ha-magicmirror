@@ -1,17 +1,3 @@
-brightness:
-  name: brightness
-  description: brightness Magic Mirror
-  fields:
-    brightness:
-      name: Brightness
-      description: Brightness
-      example: 100
-      required: true
-      selector:
-        number:
-          min: 0
-          max: 100
-
 notification:
   name: notification
   description: notification Magic Mirror

@@ -60,24 +60,12 @@ async def async_register_services(
         ),
     )
 
-    async def async_brightness(service: ServiceCall):
-        """Change brightness of MagicMirror."""
-        await api.brightness(service.data["brightness"])
-
-    hass.services.async_register(
-        DOMAIN,
-        Services.BRIGHTNESS.value,
-        async_brightness,
-        schema=vol.Schema({vol.Required("brightness"): cv.positive_int}),
-    )
-
     return True
 
 
 async def async_unload_services(hass: HomeAssistant) -> bool:
     """Unload services."""
 
-    hass.services.async_remove(DOMAIN, Services.BRIGHTNESS.value)
     hass.services.async_remove(DOMAIN, Services.NOTIFICATION.value)
     hass.services.async_remove(DOMAIN, Services.ALERT.value)
 
