@@ -6,6 +6,7 @@ from typing import Optional
 from homeassistant.components.binary_sensor import (
     BinarySensorEntity,
     BinarySensorEntityDescription,
+    BinarySensorDeviceClass,
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import STATE_ON, STATE_OFF
@@ -23,6 +24,7 @@ BINARY_SENSORS: tuple[BinarySensorEntityDescription, ...] = (
         name="MagicMirror Update Available",
         icon="mdi:arrow-up-box",  # TODO different icon for on / off
         entity_category=EntityCategory.DIAGNOSTIC,
+        device_class=BinarySensorDeviceClass.UPDATE,
     ),
 )
 
