@@ -32,8 +32,6 @@ Requires [MMM-Remote-Control](https://github.com/Jopyth/MMM-Remote-Control) inst
 ## TODO
 - [ ] Handle installed_modules, and create a toggle to show/hide modules
 - [ ] Add Button-entity to update (if possible)
-- [ ] Remove binary_sensor for monitor state (not needed with switch entity)
-- [ ] Remove monitor on/off/toggle-services (not needed with switch entity)
 
 ## Features
 ### Binary sensor
