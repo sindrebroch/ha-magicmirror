@@ -7,7 +7,7 @@ from homeassistant.const import CONF_API_KEY, CONF_HOST, CONF_PORT
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
 from .api import MagicMirrorApiClient
-from .const import DOMAIN as MAGICMIRROR_DOMAIN, PLATFORMS
+from .const import DOMAIN, PLATFORMS
 from .coordinator import MagicMirrorDataUpdateCoordinator
 from .services import async_unload_services, async_register_services
 
@@ -15,12 +15,12 @@ from .services import async_unload_services, async_register_services
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up MagicMirror from a config entry."""
 
-    hass.data.setdefault(MAGICMIRROR_DOMAIN, {})
+    hass.data.setdefault(DOMAIN, {})
 
     api = MagicMirrorApiClient(
-        host= entry.data[CONF_HOST],
+        host=entry.data[CONF_HOST],
         port=entry.data[CONF_PORT],
-        api_key= entry.data[CONF_API_KEY],
+        api_key=entry.data[CONF_API_KEY],
         session=async_get_clientsession(hass),
     )
 
@@ -28,7 +28,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     await coordinator.async_config_entry_first_refresh()
 
-    hass.data[MAGICMIRROR_DOMAIN][entry.entry_id] = coordinator
+    hass.data[DOMAIN][entry.entry_id] = coordinator
 
     hass.config_entries.async_setup_platforms(entry, PLATFORMS)
 
@@ -43,7 +43,7 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     unload_ok = await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
 
     if unload_ok:
-        hass.data[MAGICMIRROR_DOMAIN].pop(entry.entry_id)
+        hass.data[DOMAIN].pop(entry.entry_id)
 
     await async_unload_services(hass)
 

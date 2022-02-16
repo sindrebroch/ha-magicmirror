@@ -13,7 +13,7 @@ from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
 from .api import MagicMirrorApiClient
-from .const import DOMAIN as MAGICMIRROR_DOMAIN, LOGGER
+from .const import DOMAIN, LOGGER
 from .models import Entity, MonitorResponse, QueryResponse
 
 
@@ -32,14 +32,14 @@ class MagicMirrorDataUpdateCoordinator(DataUpdateCoordinator):
             name="MagicMirror",
             model="MagicMirror",
             manufacturer="MagicMirror",
-            identifiers={(MAGICMIRROR_DOMAIN, "MagicMirror")},
+            identifiers={(DOMAIN, "MagicMirror")},
             configuration_url=f"{api.base_url}/remote.html",
         )
 
         super().__init__(
             hass,
             LOGGER,
-            name=MAGICMIRROR_DOMAIN,
+            name=DOMAIN,
             update_interval=timedelta(minutes=1),
         )
 

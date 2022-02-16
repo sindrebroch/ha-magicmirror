@@ -13,7 +13,7 @@ from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
-from .const import DOMAIN as MAGICMIRROR_DOMAIN
+from .const import DOMAIN
 from .coordinator import MagicMirrorDataUpdateCoordinator
 
 BINARY_SENSORS: tuple[BinarySensorEntityDescription, ...] = (
@@ -33,9 +33,7 @@ async def async_setup_entry(
 ) -> None:
     """Add MagicMirror entities from a config_entry."""
 
-    coordinator: MagicMirrorDataUpdateCoordinator = hass.data[MAGICMIRROR_DOMAIN][
-        entry.entry_id
-    ]
+    coordinator: MagicMirrorDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]
 
     async_add_entities(
         MagicMirrorBinarySensor(coordinator, description)

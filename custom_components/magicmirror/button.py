@@ -1,8 +1,6 @@
 """Button for MagicMirror."""
 
-from custom_components.magicmirror.api import MagicMirrorApiClient
 from custom_components.magicmirror.models import Entity
-from typing import cast
 
 from homeassistant.components.button import (
     ButtonEntity,
@@ -10,12 +8,11 @@ from homeassistant.components.button import (
     ButtonDeviceClass,
 )
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import PERCENTAGE
-from homeassistant.core import HomeAssistant, callback
+from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
-from .const import DOMAIN, LOGGER
+from .const import DOMAIN
 from .coordinator import MagicMirrorDataUpdateCoordinator
 
 

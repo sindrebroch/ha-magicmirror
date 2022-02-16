@@ -13,7 +13,7 @@ from homeassistant.data_entry_flow import FlowResult
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
 from .api import MagicMirrorApiClient
-from .const import DOMAIN as MAGICMIRROR_DOMAIN, LOGGER
+from .const import DOMAIN, LOGGER
 from .models import GenericResponse
 
 SCHEMA = vol.Schema(
@@ -25,7 +25,7 @@ SCHEMA = vol.Schema(
 )
 
 
-class MagicMirrorFlowHandler(config_entries.ConfigFlow, domain=MAGICMIRROR_DOMAIN):
+class MagicMirrorFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
     """Config flow for MagicMirror."""
 
     VERSION = 1

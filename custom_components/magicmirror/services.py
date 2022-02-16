@@ -7,7 +7,7 @@ from homeassistant.core import HomeAssistant, ServiceCall
 from homeassistant.helpers import config_validation as cv
 
 from .api import MagicMirrorApiClient
-from .const import DOMAIN as MAGICMIRROR_DOMAIN
+from .const import DOMAIN
 from .models import Services
 
 
@@ -21,7 +21,7 @@ async def async_register_services(
         await api.monitor_on()
 
     hass.services.async_register(
-        MAGICMIRROR_DOMAIN,
+        DOMAIN,
         Services.MONITOR_ON.value,
         async_monitor_on,
     )
@@ -31,7 +31,7 @@ async def async_register_services(
         await api.monitor_off()
 
     hass.services.async_register(
-        MAGICMIRROR_DOMAIN,
+        DOMAIN,
         Services.MONITOR_OFF.value,
         async_monitor_off,
     )
@@ -41,7 +41,7 @@ async def async_register_services(
         await api.monitor_toggle()
 
     hass.services.async_register(
-        MAGICMIRROR_DOMAIN,
+        DOMAIN,
         Services.MONITOR_TOGGLE.value,
         async_monitor_toggle,
     )
@@ -51,7 +51,7 @@ async def async_register_services(
         await api.shutdown()
 
     hass.services.async_register(
-        MAGICMIRROR_DOMAIN,
+        DOMAIN,
         Services.SHUTDOWN.value,
         async_shutdown,
     )
@@ -61,7 +61,7 @@ async def async_register_services(
         await api.reboot()
 
     hass.services.async_register(
-        MAGICMIRROR_DOMAIN,
+        DOMAIN,
         Services.REBOOT.value,
         async_reboot,
     )
@@ -71,7 +71,7 @@ async def async_register_services(
         await api.restart()
 
     hass.services.async_register(
-        MAGICMIRROR_DOMAIN,
+        DOMAIN,
         Services.RESTART.value,
         async_restart,
     )
@@ -86,7 +86,7 @@ async def async_register_services(
         )
 
     hass.services.async_register(
-        MAGICMIRROR_DOMAIN,
+        DOMAIN,
         Services.NOTIFICATION.value,
         async_notification,
         schema=vol.Schema(
@@ -108,7 +108,7 @@ async def async_register_services(
         )
 
     hass.services.async_register(
-        MAGICMIRROR_DOMAIN,
+        DOMAIN,
         Services.ALERT.value,
         async_alert,
         schema=vol.Schema(
@@ -125,7 +125,7 @@ async def async_register_services(
         await api.brightness(service.data["brightness"])
 
     hass.services.async_register(
-        MAGICMIRROR_DOMAIN,
+        DOMAIN,
         Services.BRIGHTNESS.value,
         async_brightness,
         schema=vol.Schema({vol.Required("brightness"): cv.positive_int}),
@@ -136,7 +136,7 @@ async def async_register_services(
         await api.refresh()
 
     hass.services.async_register(
-        MAGICMIRROR_DOMAIN,
+        DOMAIN,
         Services.REFRESH.value,
         async_refresh,
     )
@@ -147,15 +147,15 @@ async def async_register_services(
 async def async_unload_services(hass: HomeAssistant) -> bool:
     """Unload services."""
 
-    hass.services.async_remove(MAGICMIRROR_DOMAIN, Services.MONITOR_ON.value)
-    hass.services.async_remove(MAGICMIRROR_DOMAIN, Services.MONITOR_OFF.value)
-    hass.services.async_remove(MAGICMIRROR_DOMAIN, Services.MONITOR_TOGGLE.value)
-    hass.services.async_remove(MAGICMIRROR_DOMAIN, Services.SHUTDOWN.value)
-    hass.services.async_remove(MAGICMIRROR_DOMAIN, Services.REBOOT.value)
-    hass.services.async_remove(MAGICMIRROR_DOMAIN, Services.RESTART.value)
-    hass.services.async_remove(MAGICMIRROR_DOMAIN, Services.REFRESH.value)
-    hass.services.async_remove(MAGICMIRROR_DOMAIN, Services.BRIGHTNESS.value)
-    hass.services.async_remove(MAGICMIRROR_DOMAIN, Services.NOTIFICATION.value)
-    hass.services.async_remove(MAGICMIRROR_DOMAIN, Services.ALERT.value)
+    hass.services.async_remove(DOMAIN, Services.MONITOR_ON.value)
+    hass.services.async_remove(DOMAIN, Services.MONITOR_OFF.value)
+    hass.services.async_remove(DOMAIN, Services.MONITOR_TOGGLE.value)
+    hass.services.async_remove(DOMAIN, Services.SHUTDOWN.value)
+    hass.services.async_remove(DOMAIN, Services.REBOOT.value)
+    hass.services.async_remove(DOMAIN, Services.RESTART.value)
+    hass.services.async_remove(DOMAIN, Services.REFRESH.value)
+    hass.services.async_remove(DOMAIN, Services.BRIGHTNESS.value)
+    hass.services.async_remove(DOMAIN, Services.NOTIFICATION.value)
+    hass.services.async_remove(DOMAIN, Services.ALERT.value)
 
     return True
