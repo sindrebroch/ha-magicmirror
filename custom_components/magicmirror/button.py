@@ -26,40 +26,42 @@ async def async_setup_entry(
     coordinator: MagicMirrorDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]
 
     async_add_entities(
-        MagicMirrorShutdownButton(
-            coordinator,
-            ButtonEntityDescription(
-                key=Entity.SHUTDOWN.value,
-                name="Magic Mirror Shutdown",
-                icon="mdi:power",
+        [
+            MagicMirrorShutdownButton(
+                coordinator,
+                ButtonEntityDescription(
+                    key=Entity.SHUTDOWN.value,
+                    name="MagicMirror Shutdown",
+                    icon="mdi:power",
+                ),
             ),
-        ),
-        MagicMirrorRestartButton(
-            coordinator,
-            ButtonEntityDescription(
-                key=Entity.RESTART.value,
-                name="Magic Mirror Restart",
-                icon="mdi:restart",
-                device_class=ButtonDeviceClass.RESTART,
+            MagicMirrorRestartButton(
+                coordinator,
+                ButtonEntityDescription(
+                    key=Entity.RESTART.value,
+                    name="MagicMirror Restart",
+                    icon="mdi:restart",
+                    device_class=ButtonDeviceClass.RESTART,
+                ),
             ),
-        ),
-        MagicMirrorRebootButton(
-            coordinator,
-            ButtonEntityDescription(
-                key=Entity.REBOOT.value,
-                name="Magic Mirror Reboot",
-                icon="mdi:restart",
-                device_class=ButtonDeviceClass.RESTART,
+            MagicMirrorRebootButton(
+                coordinator,
+                ButtonEntityDescription(
+                    key=Entity.REBOOT.value,
+                    name="MagicMirror Reboot",
+                    icon="mdi:restart",
+                    device_class=ButtonDeviceClass.RESTART,
+                ),
             ),
-        ),
-        MagicMirrorRefreshButton(
-            coordinator,
-            ButtonEntityDescription(
-                key=Entity.REFRESH.value,
-                name="Magic Mirror Refresh",
-                icon="mdi:refresh",
+            MagicMirrorRefreshButton(
+                coordinator,
+                ButtonEntityDescription(
+                    key=Entity.REFRESH.value,
+                    name="MagicMirror Refresh",
+                    icon="mdi:refresh",
+                ),
             ),
-        ),
+        ]
     )
 
 
