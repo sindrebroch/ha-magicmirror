@@ -7,12 +7,19 @@ import attr
 
 from .const import LOGGER
 
+
 class Entity(Enum):
     """Enum for storing Entity."""
 
     MONITOR_STATUS = "monitor_status"
     UPDATE_AVAILABLE = "update_available"
     BRIGHTNESS = "brightness"
+
+    REBOOT = "reboot"
+    RESTART = "restart"
+    REFRESH = "refresh"
+    SHUTDOWN = "shutdown"
+
 
 class Services(Enum):
     """Enum for storing services."""
@@ -37,6 +44,7 @@ class Services(Enum):
     MODULE_UPDATE = "module_update"
     MODULE_INSTALL = "module_install"
 
+
 @attr.s(auto_attribs=True)
 class MonitorResponse:
     """Class representing MagicMirror."""
@@ -55,6 +63,7 @@ class MonitorResponse:
             monitor=data.get("monitor"),
         )
 
+
 @attr.s(auto_attribs=True)
 class Query:
     """Class representing Query"""
@@ -67,9 +76,7 @@ class Query:
 
         LOGGER.debug("Query=%s", query)
 
-        return Query(
-            data=query.get("data")
-        )
+        return Query(data=query.get("data"))
 
 
 @attr.s(auto_attribs=True)
@@ -89,7 +96,7 @@ class QueryResponse:
         return QueryResponse(
             success=bool(data.get("success")),
             result=data.get("result"),
-            query=Query.from_dict(data.get("query"))
+            query=Query.from_dict(data.get("query")),
         )
 
 
