@@ -51,9 +51,5 @@ Requires [MMM-Remote-Control](https://github.com/Jopyth/MMM-Remote-Control) inst
 - refresh
 
 ### Services
-- monitor on
-- monitor off
-- monitor toggle
-- brightness
 - notification
 - alert
