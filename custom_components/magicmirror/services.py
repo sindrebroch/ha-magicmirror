@@ -16,36 +16,6 @@ async def async_register_services(
 ) -> bool:
     """Register services."""
 
-    async def async_monitor_on(_):
-        """Turn monitor on for MagicMirror."""
-        await api.monitor_on()
-
-    hass.services.async_register(
-        DOMAIN,
-        Services.MONITOR_ON.value,
-        async_monitor_on,
-    )
-
-    async def async_monitor_off(_):
-        """Turn monitor off for MagicMirror."""
-        await api.monitor_off()
-
-    hass.services.async_register(
-        DOMAIN,
-        Services.MONITOR_OFF.value,
-        async_monitor_off,
-    )
-
-    async def async_monitor_toggle(_):
-        """Toggle monitor for MagicMirror."""
-        await api.monitor_toggle()
-
-    hass.services.async_register(
-        DOMAIN,
-        Services.MONITOR_TOGGLE.value,
-        async_monitor_toggle,
-    )
-
     async def async_notification(service: ServiceCall):
         """Notification MagicMirror."""
         await api.alert(
@@ -101,25 +71,12 @@ async def async_register_services(
         schema=vol.Schema({vol.Required("brightness"): cv.positive_int}),
     )
 
-    async def async_refresh(_):
-        """Refresh MagicMirror."""
-        await api.refresh()
-
-    hass.services.async_register(
-        DOMAIN,
-        Services.REFRESH.value,
-        async_refresh,
-    )
-
     return True
 
 
 async def async_unload_services(hass: HomeAssistant) -> bool:
     """Unload services."""
 
-    hass.services.async_remove(DOMAIN, Services.MONITOR_ON.value)
-    hass.services.async_remove(DOMAIN, Services.MONITOR_OFF.value)
-    hass.services.async_remove(DOMAIN, Services.MONITOR_TOGGLE.value)
     hass.services.async_remove(DOMAIN, Services.BRIGHTNESS.value)
     hass.services.async_remove(DOMAIN, Services.NOTIFICATION.value)
     hass.services.async_remove(DOMAIN, Services.ALERT.value)

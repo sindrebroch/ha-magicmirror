@@ -1,15 +1,3 @@
-monitor_on:
-  name: Turn on monitor
-  description: Turn on monitor for Magic Mirror
-
-monitor_off:
-  name: Turn off monitor
-  description: Turn off monitor for Magic Mirror
-
-monitor_toggle:
-  name: Toggle monitor
-  description: Toggle monitor for Magic Mirror
-
 brightness:
   name: brightness
   description: brightness Magic Mirror

@@ -24,9 +24,6 @@ class Entity(Enum):
 class Services(Enum):
     """Enum for storing services."""
 
-    MONITOR_ON = "monitor_on"
-    MONITOR_OFF = "monitor_off"
-    MONITOR_TOGGLE = "monitor_toggle"
     MINIMIZE = "minimize"
     FULLSCREEN_TOGGLE = "toggle_fullscreen"
     NOTIFICATION = "notification"
