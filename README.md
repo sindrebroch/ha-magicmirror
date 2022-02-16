@@ -33,8 +33,8 @@ Requires [MMM-Remote-Control](https://github.com/Jopyth/MMM-Remote-Control) inst
 
 
 ## Todo
+- [ ] Add Button-entity to update [if possible]
 - [ ] Handle installed_modules, and create a toggle to show/hide modules
-- [ ] Add Button-entity to update (if possible)
 
 ## Features
 ### Binary sensor
@@ -52,8 +52,10 @@ Requires [MMM-Remote-Control](https://github.com/Jopyth/MMM-Remote-Control) inst
 - Restart magicmirror
 - Refresh browser
 
-### Notify example
+### Notify
 ```
+Example:
+
 service: notify.magicmirror
 data:
   title: Title      # optional
