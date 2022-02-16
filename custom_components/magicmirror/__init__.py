@@ -15,9 +15,8 @@ from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.typing import ConfigType
 
 from .api import MagicMirrorApiClient
-from .const import ATTR_CONFIG_ENTRY_ID, DATA_HASS_CONFIG, DOMAIN, LOGGER, PLATFORMS
+from .const import ATTR_CONFIG_ENTRY_ID, DATA_HASS_CONFIG, DOMAIN, PLATFORMS
 from .coordinator import MagicMirrorDataUpdateCoordinator
-from .services import async_unload_services, async_register_services
 
 
 async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
@@ -49,8 +48,6 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     await async_setup_notify(hass, entry)
 
-    await async_register_services(hass, api)
-
     return True
 
 
@@ -79,8 +76,6 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     if unload_ok:
         hass.data[DOMAIN].pop(entry.entry_id)
-
-    await async_unload_services(hass)
 
     return unload_ok
 

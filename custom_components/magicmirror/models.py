@@ -26,9 +26,6 @@ class Services(Enum):
 
     MINIMIZE = "minimize"
     FULLSCREEN_TOGGLE = "toggle_fullscreen"
-    NOTIFICATION = "notification"
-    ALERT = "alert"
-    REFRESH = "refresh"
     DEVTOOLS = "devtools"
     MODULE = "module"
     MODULE_ACTION = "module_action"
