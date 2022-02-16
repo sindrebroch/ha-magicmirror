@@ -1,4 +1,4 @@
-"""The MagicMirror integration."""
+"""Services for MagicMirror."""
 from __future__ import annotations
 
 import voluptuous as vol
@@ -9,6 +9,7 @@ from homeassistant.helpers import config_validation as cv
 from .api import MagicMirrorApiClient
 from .const import DOMAIN as MAGICMIRROR_DOMAIN
 from .models import Services
+
 
 async def async_register_services(
     hass: HomeAssistant, api: MagicMirrorApiClient
@@ -141,6 +142,7 @@ async def async_register_services(
     )
 
     return True
+
 
 async def async_unload_services(hass: HomeAssistant) -> bool:
     """Unload services."""

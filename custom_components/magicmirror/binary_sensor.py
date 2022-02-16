@@ -1,4 +1,4 @@
-"""Binary sensor file for MagicMirror."""
+"""Binary sensor for MagicMirror."""
 
 from custom_components.magicmirror.models import Entity
 from typing import Optional
@@ -20,10 +20,11 @@ BINARY_SENSORS: tuple[BinarySensorEntityDescription, ...] = (
     BinarySensorEntityDescription(
         key=Entity.UPDATE_AVAILABLE.value,
         name="MagicMirror Update Available",
-        icon="mdi:arrow-up-box", # TODO different icon for on / off
-        entity_category=ENTITY_CATEGORY_DIAGNOSTIC
+        icon="mdi:arrow-up-box",  # TODO different icon for on / off
+        entity_category=ENTITY_CATEGORY_DIAGNOSTIC,
     ),
 )
+
 
 async def async_setup_entry(
     hass: HomeAssistant,
@@ -32,11 +33,15 @@ async def async_setup_entry(
 ) -> None:
     """Add MagicMirror entities from a config_entry."""
 
-    coordinator: MagicMirrorDataUpdateCoordinator = hass.data[MAGICMIRROR_DOMAIN][entry.entry_id]
-        
+    coordinator: MagicMirrorDataUpdateCoordinator = hass.data[MAGICMIRROR_DOMAIN][
+        entry.entry_id
+    ]
+
     async_add_entities(
-        MagicMirrorBinarySensor(coordinator, description) for description in BINARY_SENSORS
+        MagicMirrorBinarySensor(coordinator, description)
+        for description in BINARY_SENSORS
     )
+
 
 class MagicMirrorBinarySensor(CoordinatorEntity, BinarySensorEntity):
     """Define a MagicMirror entity."""
@@ -58,7 +63,7 @@ class MagicMirrorBinarySensor(CoordinatorEntity, BinarySensorEntity):
 
         self._attr_unique_id = f"{description.key}"
         self._attr_device_info = coordinator._attr_device_info
-    
+
     @property
     def is_on(self) -> Optional[bool]:
         """Return true if the binary sensor is on."""

@@ -1,4 +1,4 @@
-"""MagicMirror library."""
+"""MagicMirror API."""
 
 from http import HTTPStatus
 from typing import Any, Optional
@@ -33,7 +33,7 @@ API_MODULE_INSTALLED = f"{API_MODULE}/installed"
 API_MODULE_AVAILABLE = f"{API_MODULE}/available"
 API_UPDATE_MODULE = "api/update"
 API_INSTALL_MODULE = "api/install"
-API_UPDATE_AVAILABLE = "api/mmUpdateAvailable" 
+API_UPDATE_AVAILABLE = "api/mmUpdateAvailable"
 
 # API
 API_CONFIG = "api/config"

@@ -1,4 +1,4 @@
-"""Binary sensor file for MagicMirror."""
+"""Number for MagicMirror."""
 
 from custom_components.magicmirror.models import Entity
 from typing import cast
@@ -21,7 +21,7 @@ NUMBERS: tuple[NumberEntityDescription, ...] = (
         key=Entity.BRIGHTNESS.value,
         name="Magic Mirror Brightness",
         icon="mdi:television-ambient-light",
-        unit_of_measurement=PERCENTAGE
+        unit_of_measurement=PERCENTAGE,
     ),
 )
 
@@ -33,11 +33,14 @@ async def async_setup_entry(
 ) -> None:
     """Add MagicMirror entities from a config_entry."""
 
-    coordinator: MagicMirrorDataUpdateCoordinator = hass.data[MAGICMIRROR_DOMAIN][entry.entry_id]
+    coordinator: MagicMirrorDataUpdateCoordinator = hass.data[MAGICMIRROR_DOMAIN][
+        entry.entry_id
+    ]
 
     async_add_entities(
         MagicMirrorNumber(coordinator, description) for description in NUMBERS
     )
+
 
 class MagicMirrorNumber(CoordinatorEntity, NumberEntity):
     """Define a MagicMirror entity."""
@@ -59,7 +62,6 @@ class MagicMirrorNumber(CoordinatorEntity, NumberEntity):
 
         self._attr_unique_id = f"{description.key}"
         self._attr_device_info = coordinator._attr_device_info
-    
 
     @property
     def value(self) -> float:

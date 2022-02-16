@@ -1,4 +1,4 @@
-"""Config flow for MagicMirror integration."""
+"""Config flow for MagicMirror."""
 
 from __future__ import annotations
 
