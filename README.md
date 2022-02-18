@@ -54,8 +54,6 @@ Requires [MMM-Remote-Control](https://github.com/Jopyth/MMM-Remote-Control) inst
 
 ### Notify
 ```
-Example:
-
 service: notify.magicmirror
 data:
   title: Title      # optional
