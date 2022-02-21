@@ -62,3 +62,18 @@ data:
     timer: 5000     # default, optional
     dropdown: False # default, optional
 ```
+
+## Debugging
+
+If something is not working properly, logs might help with debugging. To turn on debug-logging add this to your `configuration.yaml`
+
+```
+logger:
+  default: info
+  logs:
+    custom_components.magicmirror: debug
+```
+
+Have started work on diagnostics. This will be expanded on in the future as it is more clear what is needed to include to resolve issues.
+To download diagnostics, go into your device and press DOWNLOAD DIAGNOSTICS.
+This downloads a txt-file you can post in you issue. All sensitive data should be redacted here, so no need to worry, but you can inspect it if you want.
