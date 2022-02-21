@@ -32,10 +32,6 @@ Requires [MMM-Remote-Control](https://github.com/Jopyth/MMM-Remote-Control) inst
 </details>
 
 
-## Todo
-- [ ] Add Button-entity to update [if possible]
-- [ ] Handle installed_modules, and create a toggle to show/hide modules
-
 ## Features
 ### Binary sensor
 - Update available
