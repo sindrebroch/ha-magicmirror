@@ -1,6 +1,5 @@
 """Diagnostics support for MagicMirror."""
 from __future__ import annotations
-from typing import List
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
@@ -24,15 +23,11 @@ async def async_get_config_entry_diagnostics(
     api: MagicMirrorApiClient = coordinator.api
     data = coordinator.data
 
-    modules: List[ModuleDataResponse] = data[Entity.MODULES.value]
-
-    diagnostics_data = {
+    return {
         "host": api.host,
         "port": api.port,
-        "brightness": data[Entity.BRIGHTNESS.value],
-        "monitor_status": data[Entity.MONITOR_STATUS.value],
-        "update_available": data[Entity.UPDATE_AVAILABLE.value],
-        "modules": "".join(modules),
+        "brightness": data.brightness,
+        "monitor_status": data.monitor_status,
+        "update_available": data.update_available,
+        "modules": str(data.modules),
     }
-
-    return diagnostics_data
