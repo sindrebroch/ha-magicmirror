@@ -36,15 +36,6 @@ class Services(Enum):
     MODULE_INSTALL = "module_install"
 
 
-@attr.s(auto_attribs=True)
-class MagicMirrorData:
-
-    monitor_status: str
-    update_available: bool
-    brightness: int
-    modules: List[Any]
-
-
 class ActionsDict:
 
     notification: str
@@ -86,6 +77,15 @@ class ModuleDataResponse:
 
 
 @attr.s(auto_attribs=True)
+class MagicMirrorData:
+
+    monitor_status: str
+    update_available: bool
+    brightness: int
+    modules: List[ModuleDataResponse]
+
+
+@attr.s(auto_attribs=True)
 class ModuleResponse:
     """Class representing Module Response."""
 
@@ -98,9 +98,13 @@ class ModuleResponse:
 
         LOGGER.debug("ModuleResponse=%s", data)
 
+        modules: List[ModuleDataResponse] = []
+        for module in data.get("data"):
+            modules.append(ModuleDataResponse.from_dict(module))
+
         return ModuleResponse(
             success=bool(data.get("success")),
-            data=(ModuleDataResponse.from_dict(module) for module in data.get("data")),
+            data=modules,
         )
 
 

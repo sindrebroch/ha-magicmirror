@@ -1,13 +1,10 @@
 """The MagicMirror integration."""
 from __future__ import annotations
 
-import asyncio
-
 from datetime import timedelta
 
 from aiohttp.client_exceptions import ClientConnectorError
 from async_timeout import timeout
-import attr
 from voluptuous.error import Error
 
 from homeassistant.core import HomeAssistant
@@ -53,17 +50,10 @@ class MagicMirrorDataUpdateCoordinator(DataUpdateCoordinator):
 
         try:
             async with timeout(10):
-                req = await asyncio.gather(
-                    self.api.update_available(),
-                    self.api.monitor_status(),
-                    self.api.get_brightness(),
-                    self.api.get_modules(),
-                )
-
-                update: QueryResponse = req[0]
-                monitor: MonitorResponse = req[1]
-                brightness: QueryResponse = req[2]
-                modules: ModuleResponse = req[3]
+                update: QueryResponse = await self.api.update_available()
+                monitor: MonitorResponse = await self.api.monitor_status()
+                brightness: QueryResponse = await self.api.get_brightness()
+                modules: ModuleResponse = await self.api.get_modules()
 
                 if not monitor.success:
                     LOGGER.warning("Failed to fetch monitor-status for MagicMirror")
