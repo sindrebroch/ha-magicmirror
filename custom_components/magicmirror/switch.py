@@ -83,7 +83,8 @@ class MagicMirrorSwitch(CoordinatorEntity, ToggleEntity):
 
         self.sensor_data = (
             True
-            if self.coordinator.data.get(self.entity_description.key) == STATE_ON
+            if self.coordinator.data.__getattribute__(self.entity_description.key)
+            == STATE_ON
             else False
         )
         super()._handle_coordinator_update()
