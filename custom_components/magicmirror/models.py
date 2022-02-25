@@ -1,7 +1,7 @@
 """Models for MagicMirror."""
 
 from enum import Enum
-from typing import Any, Dict
+from typing import Any, Dict, List
 
 import attr
 
@@ -14,6 +14,7 @@ class Entity(Enum):
     MONITOR_STATUS = "monitor_status"
     UPDATE_AVAILABLE = "update_available"
     BRIGHTNESS = "brightness"
+    MODULES = "modules"
 
     REBOOT = "reboot"
     RESTART = "restart"
@@ -33,6 +34,74 @@ class Services(Enum):
     MODULE_AVAILABLE = "module_available"
     MODULE_UPDATE = "module_update"
     MODULE_INSTALL = "module_install"
+
+
+@attr.s(auto_attribs=True)
+class MagicMirrorData:
+
+    monitor_status: str
+    update_available: bool
+    brightness: int
+    modules: List[Any]
+
+
+class ActionsDict:
+
+    notification: str
+    guessed: bool
+
+
+@attr.s(auto_attribs=True)
+class ModuleDataResponse:
+    """Class representing Module Data Response."""
+
+    index: int
+    identifier: str
+    name: str
+    path: str
+    file: str
+    configDeepMerge: bool
+    # config: str # dict
+    classes: str
+    hidden: bool
+    # lockStrings: str # List
+    # actions: Dict[str, ActionsDict]  # optional
+
+    @staticmethod
+    def from_dict(data: Dict[str, Any]) -> "ModuleDataResponse":
+        """Transform data to dict."""
+
+        LOGGER.debug("ModuleDataResponse=%s", data)
+
+        return ModuleDataResponse(
+            index=data.get("index"),
+            identifier=data.get("identifier"),
+            name=data.get("name"),
+            path=data.get("path"),
+            file=data.get("file"),
+            configDeepMerge=bool(data.get("configDeepMerge")),
+            classes=data.get("classes"),
+            hidden=bool(data.get("hidden")),
+        )
+
+
+@attr.s(auto_attribs=True)
+class ModuleResponse:
+    """Class representing Module Response."""
+
+    success: bool
+    data: List[ModuleDataResponse]
+
+    @staticmethod
+    def from_dict(data: Dict[str, Any]) -> "ModuleResponse":
+        """Transform data to dict."""
+
+        LOGGER.debug("ModuleResponse=%s", data)
+
+        return ModuleResponse(
+            success=bool(data.get("success")),
+            data=(ModuleDataResponse.from_dict(module) for module in data.get("data")),
+        )
 
 
 @attr.s(auto_attribs=True)

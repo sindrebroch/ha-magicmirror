@@ -66,10 +66,7 @@ class MagicMirrorNumber(CoordinatorEntity, NumberEntity):
         return self.sensor_data
 
     def get_sensor_data(self) -> float:
-        LOGGER.debug("Data for number-entity:")
-        LOGGER.debug("coordinator_data=%s", self.coordinator.data)
-        LOGGER.debug("key=%s", self.coordinator.data[self.entity_description.key])
-        return self.coordinator.data[self.entity_description.key]
+        return self.coordinator.data.__getattribute__(self.entity_description.key)
 
     async def async_set_value(self, value: float) -> None:
         """Update the current value."""

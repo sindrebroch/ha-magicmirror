@@ -6,7 +6,7 @@ from typing import Any, Optional
 import aiohttp
 
 from .const import LOGGER
-from .models import GenericResponse, MonitorResponse, QueryResponse
+from .models import GenericResponse, ModuleResponse, MonitorResponse, QueryResponse
 
 
 # Mirror control
@@ -132,6 +132,10 @@ class MagicMirrorApiClient:
         """Get monitor status."""
         return MonitorResponse.from_dict(await self.get(API_MONITOR_STATUS))
 
+    async def get_modules(self) -> ModuleResponse:
+        """Get module status."""
+        return ModuleResponse.from_dict(await self.get(API_MODULE))
+
     async def monitor_on(self) -> Any:
         """Turn on monitor."""
         return MonitorResponse.from_dict(await self.get(API_MONITOR_ON))
@@ -211,6 +215,12 @@ class MagicMirrorApiClient:
     async def config(self) -> Any:
         """Config."""
         return await self.get(API_CONFIG)
+
+    async def show_module(self, module) -> Any:
+        return await self.get(f"{API_MODULE}/{module}/show")
+
+    async def hide_module(self, module) -> Any:
+        return await self.get(f"{API_MODULE}/{module}/hide")
 
     async def alert(
         self,

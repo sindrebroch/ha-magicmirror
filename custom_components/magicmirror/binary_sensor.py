@@ -72,12 +72,13 @@ class MagicMirrorBinarySensor(CoordinatorEntity, BinarySensorEntity):
         return self.sensor_data
 
     def get_sensor_data(self) -> bool:
-        if self.coordinator.data[self.entity_description.key] == STATE_ON:
+        state = self.coordinator.data.__getattribute__(self.entity_description.key)
+        if state == STATE_ON:
             return True
-        elif self.coordinator.data[self.entity_description.key] == STATE_OFF:
+        elif state == STATE_OFF:
             return False
         else:
-            return self.coordinator.data[self.entity_description.key]
+            return state
 
     @callback
     def _handle_coordinator_update(self) -> None:

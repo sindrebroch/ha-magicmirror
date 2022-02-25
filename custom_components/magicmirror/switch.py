@@ -1,7 +1,7 @@
 """BinarySensor file for MagicMirror."""
 
-from custom_components.magicmirror.models import Entity
-from typing import Any
+from custom_components.magicmirror.models import Entity, ModuleDataResponse
+from typing import Any, List
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import STATE_ON
@@ -13,7 +13,7 @@ from homeassistant.helpers.entity import (
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
-from .const import DOMAIN
+from .const import DOMAIN, LOGGER
 from .coordinator import MagicMirrorDataUpdateCoordinator
 
 SWITCHES: tuple[ToggleEntityDescription, ...] = (
@@ -33,6 +33,13 @@ async def async_setup_entry(
     """Add MagicMirror entities from a config_entry."""
 
     coordinator: MagicMirrorDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]
+
+    modules: List[ModuleDataResponse] = coordinator.data.__getattribute__(
+        Entity.MODULES.value
+    )
+
+    for module in modules:
+        LOGGER.error("module %s", module)
 
     async_add_entities(
         MagicMirrorSwitch(coordinator, description) for description in SWITCHES
@@ -56,7 +63,8 @@ class MagicMirrorSwitch(CoordinatorEntity, ToggleEntity):
 
         self.sensor_data = (
             True
-            if self.coordinator.data[self.entity_description.key] == STATE_ON
+            if self.coordinator.data.__getattribute__(self.entity_description.key)
+            == STATE_ON
             else False
         )
 
@@ -75,7 +83,7 @@ class MagicMirrorSwitch(CoordinatorEntity, ToggleEntity):
 
         self.sensor_data = (
             True
-            if self.coordinator.data[self.entity_description.key] == STATE_ON
+            if self.coordinator.data.get(self.entity_description.key) == STATE_ON
             else False
         )
         super()._handle_coordinator_update()
