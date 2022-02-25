@@ -61,6 +61,7 @@ class MagicMirrorSwitch(CoordinatorEntity, ToggleEntity):
     ) -> None:
         """Initialize."""
 
+        super().__init__(coordinator)
         self.coordinator = coordinator
         self.entity_description = description
         self._attr_unique_id = f"{description.key}"

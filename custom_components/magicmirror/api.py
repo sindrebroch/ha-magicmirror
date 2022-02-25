@@ -1,7 +1,7 @@
 """MagicMirror API."""
 
 from http import HTTPStatus
-from typing import Any, Optional
+from typing import Any
 
 import aiohttp
 
@@ -49,7 +49,7 @@ class MagicMirrorApiClient:
         host: str,
         port: str,
         api_key: str,
-        session: Optional[aiohttp.client.ClientSession] = None,
+        session: aiohttp.client.ClientSession = None,
     ) -> None:
         """Initialize connection with MagicMirror."""
 
@@ -100,7 +100,7 @@ class MagicMirrorApiClient:
 
         return await self.handle_request(get)
 
-    async def post(self, path: str, data: Optional[str] = None) -> Any:
+    async def post(self, path: str, data: str = None) -> Any:
         """Post request."""
 
         post_url = f"{self.base_url}/{path}"
@@ -227,13 +227,14 @@ class MagicMirrorApiClient:
     async def alert(
         self,
         title: str,
-        message: str,
+        msg: str,
         timer: str,
         dropdown: bool = False,
     ) -> Any:
         """Notification screen."""
 
-        alert_type = "&type=notification" if dropdown else ""
+        alert = "&type=notification" if dropdown else ""
+
         return await self.get(
-            f"{API_MODULE}/alert/showalert?title={title}&message={message}&timer={timer}{alert_type}"
+            f"{API_MODULE}/alert/showalert?title={title}&message={msg}&timer={timer}{alert}"
         )
