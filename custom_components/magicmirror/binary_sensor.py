@@ -1,6 +1,5 @@
 """Binary sensor for MagicMirror."""
 
-from custom_components.magicmirror.models import Entity
 from typing import Optional
 
 from homeassistant.components.binary_sensor import (
@@ -9,20 +8,21 @@ from homeassistant.components.binary_sensor import (
     BinarySensorDeviceClass,
 )
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import STATE_ON, STATE_OFF
+from homeassistant.const import STATE_ON
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
-from .const import DOMAIN
-from .coordinator import MagicMirrorDataUpdateCoordinator
+from custom_components.magicmirror.const import DOMAIN
+from custom_components.magicmirror.coordinator import MagicMirrorDataUpdateCoordinator
+from custom_components.magicmirror.models import Entity
 
 BINARY_SENSORS: tuple[BinarySensorEntityDescription, ...] = (
     BinarySensorEntityDescription(
         key=Entity.UPDATE_AVAILABLE.value,
         name="MagicMirror Update Available",
-        icon="mdi:arrow-up-box",  # TODO different icon for on / off
+        icon="mdi:arrow-up-box",
         entity_category=EntityCategory.DIAGNOSTIC,
         device_class=BinarySensorDeviceClass.UPDATE,
     ),
@@ -68,10 +68,10 @@ class MagicMirrorBinarySensor(CoordinatorEntity, BinarySensorEntity):
     @property
     def is_on(self) -> Optional[bool]:
         """Return true if the binary sensor is on."""
-
         return self.sensor_data
 
     def get_sensor_data(self) -> bool:
+        """Get sensor data."""
         state = self.coordinator.data.__getattribute__(self.entity_description.key)
         return True if state == STATE_ON else False
 

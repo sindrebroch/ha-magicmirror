@@ -5,7 +5,7 @@ from typing import Any, Dict, List
 
 import attr
 
-from .const import LOGGER
+from custom_components.magicmirror.const import LOGGER
 
 
 class Entity(Enum):
@@ -37,6 +37,7 @@ class Services(Enum):
 
 
 class ActionsDict:
+    """Class representing Actions."""
 
     notification: str
     guessed: bool
@@ -78,6 +79,7 @@ class ModuleDataResponse:
 
 @attr.s(auto_attribs=True)
 class MagicMirrorData:
+    """Class representing MagicMirrorData."""
 
     monitor_status: str
     update_available: bool

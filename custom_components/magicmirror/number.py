@@ -1,8 +1,5 @@
 """Number for MagicMirror."""
 
-from custom_components.magicmirror.models import Entity
-from typing import cast
-
 from homeassistant.components.number import (
     NumberEntity,
     NumberEntityDescription,
@@ -13,8 +10,9 @@ from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
-from .const import DOMAIN, LOGGER
-from .coordinator import MagicMirrorDataUpdateCoordinator
+from custom_components.magicmirror.const import DOMAIN
+from custom_components.magicmirror.coordinator import MagicMirrorDataUpdateCoordinator
+from custom_components.magicmirror.models import Entity
 
 NUMBERS: tuple[NumberEntityDescription, ...] = (
     NumberEntityDescription(
@@ -66,6 +64,7 @@ class MagicMirrorNumber(CoordinatorEntity, NumberEntity):
         return self.sensor_data
 
     def get_sensor_data(self) -> float:
+        """Get sensor data."""
         return self.coordinator.data.__getattribute__(self.entity_description.key)
 
     async def async_set_value(self, value: float) -> None:

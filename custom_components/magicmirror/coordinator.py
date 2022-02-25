@@ -12,9 +12,14 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
-from .api import MagicMirrorApiClient
-from .const import DOMAIN, LOGGER
-from .models import MagicMirrorData, ModuleResponse, MonitorResponse, QueryResponse
+from custom_components.magicmirror.api import MagicMirrorApiClient
+from custom_components.magicmirror.const import DOMAIN, LOGGER
+from custom_components.magicmirror.models import (
+    MagicMirrorData,
+    ModuleResponse,
+    MonitorResponse,
+    QueryResponse,
+)
 
 
 class MagicMirrorDataUpdateCoordinator(DataUpdateCoordinator):

@@ -1,8 +1,7 @@
 """BinarySensor file for MagicMirror."""
 
-from unicodedata import name
-from custom_components.magicmirror.models import Entity, ModuleDataResponse
 from typing import Any, List
+
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, callback
@@ -14,8 +13,9 @@ from homeassistant.helpers.entity import (
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
-from .const import DOMAIN, LOGGER
-from .coordinator import MagicMirrorDataUpdateCoordinator
+from custom_components.magicmirror.const import DOMAIN, LOGGER
+from custom_components.magicmirror.coordinator import MagicMirrorDataUpdateCoordinator
+from custom_components.magicmirror.models import Entity, ModuleDataResponse
 
 SWITCHES: tuple[ToggleEntityDescription, ...] = (
     ToggleEntityDescription(
@@ -80,6 +80,7 @@ class MagicMirrorSwitch(CoordinatorEntity, ToggleEntity):
         return "mdi:toggle-switch" if self.is_on else "mdi:toggle-switch-off-outline"
 
     def update_from_data(self) -> None:
+        """Update sensor data."""
         self.sensor_data = self.coordinator.data.__getattribute__(
             self.entity_description.key
         )

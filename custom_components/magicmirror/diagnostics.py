@@ -6,7 +6,6 @@ from homeassistant.core import HomeAssistant
 from custom_components.magicmirror.api import MagicMirrorApiClient
 
 from custom_components.magicmirror.coordinator import MagicMirrorDataUpdateCoordinator
-from custom_components.magicmirror.models import Entity, ModuleDataResponse
 
 from .const import DOMAIN
 
