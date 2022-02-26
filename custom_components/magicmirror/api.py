@@ -1,12 +1,12 @@
 """MagicMirror API."""
 
 from http import HTTPStatus
-from typing import Any, Optional
+from typing import Any
 
 import aiohttp
 
 from .const import LOGGER
-from .models import GenericResponse, MonitorResponse, QueryResponse
+from .models import GenericResponse, ModuleResponse, MonitorResponse, QueryResponse
 
 
 # Mirror control
@@ -49,7 +49,7 @@ class MagicMirrorApiClient:
         host: str,
         port: str,
         api_key: str,
-        session: Optional[aiohttp.client.ClientSession] = None,
+        session: aiohttp.client.ClientSession = None,
     ) -> None:
         """Initialize connection with MagicMirror."""
 
@@ -86,13 +86,13 @@ class MagicMirrorApiClient:
     async def get(self, path: str) -> Any:
         """Get request."""
 
-        URL = f"{self.base_url}/{path}"
-        LOGGER.debug("GET url=%s. headers=%s", URL, self.headers)
+        get_url = f"{self.base_url}/{path}"
+        LOGGER.debug("GET url=%s. headers=%s", get_url, self.headers)
 
         assert self._session is not None
 
         get = await self._session.get(
-            url=URL,
+            url=get_url,
             headers=self.headers,
         )
 
@@ -100,17 +100,17 @@ class MagicMirrorApiClient:
 
         return await self.handle_request(get)
 
-    async def post(self, path: str, data: Optional[str] = None) -> Any:
+    async def post(self, path: str, data: str = None) -> Any:
         """Post request."""
 
-        URL = f"{self.base_url}/{path}"
-        LOGGER.debug("POST url=%s. data=%s. headers=%s", URL, data, self.headers)
+        post_url = f"{self.base_url}/{path}"
+        LOGGER.debug("POST url=%s. data=%s. headers=%s", post_url, data, self.headers)
 
         assert self._session is not None
 
         post = (
             await self._session.post(
-                url=URL,
+                url=post_url,
                 headers=self.headers,
                 data=data,
             ),
@@ -131,6 +131,10 @@ class MagicMirrorApiClient:
     async def monitor_status(self) -> MonitorResponse:
         """Get monitor status."""
         return MonitorResponse.from_dict(await self.get(API_MONITOR_STATUS))
+
+    async def get_modules(self) -> ModuleResponse:
+        """Get module status."""
+        return ModuleResponse.from_dict(await self.get(API_MODULE))
 
     async def monitor_on(self) -> Any:
         """Turn on monitor."""
@@ -180,17 +184,17 @@ class MagicMirrorApiClient:
         """Brightness."""
         return QueryResponse.from_dict(await self.get(API_BRIGHTNESS))
 
-    async def module(self, moduleName: str) -> Any:
+    async def module(self, module_name: str) -> Any:
         """Endpoint for module."""
-        return await self.get(f"{API_MODULE}/{moduleName}")
+        return await self.get(f"{API_MODULE}/{module_name}")
 
-    async def module_action(self, moduleName: str, action) -> Any:
+    async def module_action(self, module_name: str, action) -> Any:
         """Endpoint for module action."""
-        return await self.get(f"{API_MODULE}/{moduleName}/{action}")
+        return await self.get(f"{API_MODULE}/{module_name}/{action}")
 
-    async def module_update(self, moduleName: str) -> Any:
+    async def module_update(self, module_name: str) -> Any:
         """Endpoint for module update."""
-        return await self.get(f"{API_UPDATE_MODULE}/{moduleName}")
+        return await self.get(f"{API_UPDATE_MODULE}/{module_name}")
 
     async def modules(self) -> Any:
         """Endpoint for modules."""
@@ -212,16 +216,25 @@ class MagicMirrorApiClient:
         """Config."""
         return await self.get(API_CONFIG)
 
+    async def show_module(self, module) -> Any:
+        """Show module."""
+        return await self.get(f"{API_MODULE}/{module}/show")
+
+    async def hide_module(self, module) -> Any:
+        """Hide module."""
+        return await self.get(f"{API_MODULE}/{module}/hide")
+
     async def alert(
         self,
         title: str,
-        message: str,
+        msg: str,
         timer: str,
         dropdown: bool = False,
     ) -> Any:
         """Notification screen."""
 
-        alert_type = "&type=notification" if dropdown else ""
+        alert = "&type=notification" if dropdown else ""
+
         return await self.get(
-            f"{API_MODULE}/alert/showalert?title={title}&message={message}&timer={timer}{alert_type}"
+            f"{API_MODULE}/alert/showalert?title={title}&message={msg}&timer={timer}{alert}"
         )

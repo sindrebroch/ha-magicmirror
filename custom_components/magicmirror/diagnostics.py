@@ -6,7 +6,6 @@ from homeassistant.core import HomeAssistant
 from custom_components.magicmirror.api import MagicMirrorApiClient
 
 from custom_components.magicmirror.coordinator import MagicMirrorDataUpdateCoordinator
-from custom_components.magicmirror.models import Entity
 
 from .const import DOMAIN
 
@@ -23,12 +22,11 @@ async def async_get_config_entry_diagnostics(
     api: MagicMirrorApiClient = coordinator.api
     data = coordinator.data
 
-    diagnostics_data = {
+    return {
         "host": api.host,
         "port": api.port,
-        "brightness": data[Entity.BRIGHTNESS.value],
-        "monitor_status": data[Entity.MONITOR_STATUS.value],
-        "update_available": data[Entity.UPDATE_AVAILABLE.value],
+        "brightness": data.brightness,
+        "monitor_status": data.monitor_status,
+        "update_available": data.update_available,
+        "modules": str(data.modules),
     }
-
-    return diagnostics_data
