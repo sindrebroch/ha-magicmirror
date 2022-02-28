@@ -5,6 +5,7 @@ from typing import Any, List
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, callback
+from homeassistant.const import STATE_ON
 from homeassistant.helpers.entity import (
     DeviceInfo,
     ToggleEntity,
@@ -111,6 +112,11 @@ class MagicMirrorSwitch(CoordinatorEntity, ToggleEntity):
 class MagicMirrorMonitorSwitch(MagicMirrorSwitch):
     """Define a MagicMirror entity."""
 
+    def update_from_data(self) -> None:
+        """Update sensor data."""
+        coordinator_data = self.coordinator.data.__getattribute__(self.entity_description.key)
+        self.sensor_data = True if coordinator_data == STATE_ON else False
+    
     async def async_turn_on(self, **kwargs: Any) -> None:
         """Turn the entity on."""
 
