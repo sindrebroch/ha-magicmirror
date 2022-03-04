@@ -5,8 +5,8 @@ from typing import Any
 
 import aiohttp
 
-from .const import LOGGER
-from .models import GenericResponse, ModuleResponse, MonitorResponse, QueryResponse
+from custom_components.magicmirror.const import LOGGER
+from custom_components.magicmirror.models import GenericResponse, ModuleResponse, MonitorResponse, QueryResponse
 
 
 # Mirror control

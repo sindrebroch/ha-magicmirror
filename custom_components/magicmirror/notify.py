@@ -10,8 +10,7 @@ from homeassistant.components.notify import (
     PLATFORM_SCHEMA,
 )
 from custom_components.magicmirror.coordinator import MagicMirrorDataUpdateCoordinator
-
-from .const import ATTR_CONFIG_ENTRY_ID, DOMAIN
+from custom_components.magicmirror.const import ATTR_CONFIG_ENTRY_ID, DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
 

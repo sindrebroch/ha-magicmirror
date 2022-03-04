@@ -6,8 +6,7 @@ from homeassistant.core import HomeAssistant
 from custom_components.magicmirror.api import MagicMirrorApiClient
 
 from custom_components.magicmirror.coordinator import MagicMirrorDataUpdateCoordinator
-
-from .const import DOMAIN
+from custom_components.magicmirror.const import DOMAIN
 
 
 async def async_get_config_entry_diagnostics(

@@ -53,11 +53,12 @@ class ModuleDataResponse:
     path: str
     file: str
     configDeepMerge: bool
-    # config: str # dict
+    header: str  # optional
+    config: str  # dict
     classes: str
     hidden: bool
-    # lockStrings: str # List
-    # actions: Dict[str, ActionsDict]  # optional
+    lockStrings: str  # List
+    actions: str  # optional # Dict[str, ActionsDict]
 
     @staticmethod
     def from_dict(data: Dict[str, Any]) -> "ModuleDataResponse":
@@ -74,6 +75,10 @@ class ModuleDataResponse:
             configDeepMerge=bool(data.get("configDeepMerge")),
             classes=data.get("classes"),
             hidden=bool(data.get("hidden")),
+            header=data.get("header"),
+            config=data.get("config"),
+            lockStrings=data.get("lockStrings"),
+            actions=data.get("actions"),
         )
 
 

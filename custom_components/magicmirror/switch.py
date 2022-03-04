@@ -35,17 +35,13 @@ async def async_setup_entry(
 
     coordinator: MagicMirrorDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]
 
-    modules: List[ModuleDataResponse] = coordinator.data.modules
-
     async_add_entities(
-        MagicMirrorModuleSwitch(coordinator, module) for module in modules
+        MagicMirrorModuleSwitch(coordinator, module) for module in coordinator.data.modules
     )
 
     for description in SWITCHES:
         if description.key == Entity.MONITOR_STATUS.value:
             async_add_entities([MagicMirrorMonitorSwitch(coordinator, description)])
-        else:
-            async_add_entities([MagicMirrorSwitch(coordinator, description)])
 
 
 class MagicMirrorSwitch(CoordinatorEntity, ToggleEntity):
@@ -138,10 +134,13 @@ class MagicMirrorModuleSwitch(MagicMirrorSwitch):
 
         super().__init__(
             coordinator,
-            ToggleEntityDescription(key=f"{module.name}", name=f"{module.name}"),
+            ToggleEntityDescription(key=module.name),
         )
         self.module = module
-        self._attr_unique_id = f"mm_module_{self.entity_description.name}"
+
+        self.entity_id = module.identifier
+        self._attr_name = module.header if module.header is not None else module.name
+        self._attr_unique_id = module.identifier
         self.update_from_data()
 
     @property
