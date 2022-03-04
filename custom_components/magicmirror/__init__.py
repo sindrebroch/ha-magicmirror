@@ -10,19 +10,27 @@ from homeassistant.const import (
     CONF_NAME,
     Platform,
 )
-from homeassistant.helpers import discovery
+from homeassistant.helpers import discovery, device_registry as dr
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.typing import ConfigType
 
-from .api import MagicMirrorApiClient
-from .const import ATTR_CONFIG_ENTRY_ID, DATA_HASS_CONFIG, DOMAIN, PLATFORMS
-from .coordinator import MagicMirrorDataUpdateCoordinator
+from custom_components.magicmirror.api import MagicMirrorApiClient
+from custom_components.magicmirror.const import ATTR_CONFIG_ENTRY_ID, DATA_HASS_CONFIG, DOMAIN, PLATFORMS
+from custom_components.magicmirror.coordinator import MagicMirrorDataUpdateCoordinator
 
 
 async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
     """Set up the MagicMirror component."""
 
     hass.data[DATA_HASS_CONFIG] = config
+    return True
+
+async def async_remove_config_entry_device(
+    hass: HomeAssistant, config_entry: ConfigEntry, device_entry: dr.DeviceEntry
+) -> bool:
+    """Remove cast config entry from a device.
+    The actual cleanup is done in CastMediaPlayerEntity.async_will_remove_from_hass.
+    """
     return True
 
 
