@@ -144,7 +144,7 @@ class MagicMirrorModuleSwitch(MagicMirrorSwitch):
         )
         self.module = module
 
-        self.entity_id = module.identifier
+        self.entity_id = f"switch.{module.identifier}"
         self._attr_name = module.header if module.header is not None else module.name
         self._attr_unique_id = module.identifier
         self.update_from_data()
