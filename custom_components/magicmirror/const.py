@@ -8,7 +8,6 @@ LOGGER: Logger = getLogger(__package__)
 
 DOMAIN = "magicmirror"
 PLATFORMS = [
-    Platform.BINARY_SENSOR, 
     Platform.BUTTON, 
     Platform.NUMBER, 
     Platform.SWITCH, 

@@ -1,7 +1,6 @@
 {
     "name": "Magic Mirror",
     "domains": [
-        "binary_sensor",
         "button",
         "switch",
         "number",
