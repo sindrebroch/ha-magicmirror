@@ -31,13 +31,10 @@ Requires [MMM-Remote-Control](https://github.com/Jopyth/MMM-Remote-Control) inst
 4. Configure the `MagicMirror`-integration.
 </details>
 
-
 ## Features
-### Binary sensor
-- Update available
-
 ### Switch
-- Toggle monitor
+- Toggle monitor on/off
+- Show / hide modules (See [Note](https://github.com/sindrebroch/ha-magicmirror/edit/master/README.md#note))
 
 ### Number
 - Brightness
@@ -61,6 +58,9 @@ data:
     timer: 5000     # default, optional
     dropdown: False # default, optional
 ```
+
+## Note
+Module controls are using an ID from the API which is generated from MagicMirror config.js. This means that if you change the order of your config.js, the modules might become out of sync. This **_should_** be fixed by reloading the integration, to have new devices generated. The old ones needs to be deleted. 
 
 ## Debugging
 
