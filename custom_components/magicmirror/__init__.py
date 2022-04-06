@@ -28,9 +28,7 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
 async def async_remove_config_entry_device(
     hass: HomeAssistant, config_entry: ConfigEntry, device_entry: dr.DeviceEntry
 ) -> bool:
-    """Remove cast config entry from a device.
-    The actual cleanup is done in CastMediaPlayerEntity.async_will_remove_from_hass.
-    """
+    """Remove config entry device."""
     return True
 
 
