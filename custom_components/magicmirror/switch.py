@@ -144,7 +144,7 @@ class MagicMirrorModuleSwitch(MagicMirrorSwitch):
         )
         self.module = module
 
-        self.entity_id = module.identifier
+        self.entity_id = f"switch.{module.identifier}"
         self._attr_name = module.header if module.header is not None else module.name
         self._attr_unique_id = module.identifier
         self.update_from_data()
@@ -169,13 +169,13 @@ class MagicMirrorModuleSwitch(MagicMirrorSwitch):
     async def async_turn_on(self, **kwargs: Any) -> None:
         """Turn the entity on."""
 
-        await self.coordinator.api.show_module(self.entity_id)
+        await self.coordinator.api.show_module(self.module.identifier)
         self.sensor_data = True
         await self.coordinator.async_request_refresh()
 
     async def async_turn_off(self, **kwargs: Any) -> None:
         """Turn the entity off."""
         
-        await self.coordinator.api.hide_module(self.entity_id)
+        await self.coordinator.api.hide_module(self.module.identifier)
         self.sensor_data = False
         await self.coordinator.async_request_refresh()
