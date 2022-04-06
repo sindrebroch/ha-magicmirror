@@ -48,6 +48,9 @@ Requires [MMM-Remote-Control](https://github.com/Jopyth/MMM-Remote-Control) inst
 - Restart magicmirror
 - Refresh browser
 
+### Update
+- MagicMirror Update Available
+
 ### Notify
 ```
 service: notify.magicmirror
