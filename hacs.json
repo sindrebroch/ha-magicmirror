@@ -1,11 +1,5 @@
 {
     "name": "Magic Mirror",
-    "domains": [
-        "button",
-        "switch",
-        "number",
-        "update"
-    ],
     "homeassistant": "2022.4.0",
     "render_readme": true
 }
