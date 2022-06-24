@@ -6,7 +6,12 @@ from typing import Any
 import aiohttp
 
 from custom_components.magicmirror.const import LOGGER
-from custom_components.magicmirror.models import GenericResponse, ModuleResponse, MonitorResponse, QueryResponse
+from custom_components.magicmirror.models import (
+    GenericResponse,
+    ModuleResponse,
+    MonitorResponse,
+    QueryResponse,
+)
 
 
 # Mirror control
@@ -150,15 +155,15 @@ class MagicMirrorApiClient:
 
     async def shutdown(self) -> Any:
         """Shutdown."""
-        return await self.get(API_SHUTDOWN)
+        return self.get(API_SHUTDOWN)
 
     async def reboot(self) -> Any:
         """Reboot."""
-        return await self.get(API_REBOOT)
+        return self.get(API_REBOOT)
 
     async def restart(self) -> Any:
         """Restart."""
-        return await self.get(API_RESTART)
+        return self.get(API_RESTART)
 
     async def minimize(self) -> Any:
         """Minimize."""
