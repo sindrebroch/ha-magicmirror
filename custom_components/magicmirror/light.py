@@ -123,7 +123,7 @@ class MagicMirrorLight(CoordinatorEntity, LightEntity):
         await self.coordinator.async_request_refresh()
 
     @property
-    def brightness(self) -> int | None:
+    def brightness(self) -> int or None:
         """Return the brightness of the light."""
 
         return ceil(self.brightness_state * 255 / 100)
