@@ -38,7 +38,8 @@ API_MODULE_INSTALLED = f"{API_MODULE}/installed"
 API_MODULE_AVAILABLE = f"{API_MODULE}/available"
 API_UPDATE_MODULE = "api/update"
 API_INSTALL_MODULE = "api/install"
-API_UPDATE_AVAILABLE = "api/mmUpdateAvailable"
+API_MM_UPDATE_AVAILABLE = "api/mmUpdateAvailable"
+API_UPDATE_AVAILABLE = "api/updateAvailable"
 
 # API
 API_CONFIG = "api/config"
@@ -145,6 +146,10 @@ class MagicMirrorApiClient:
         """Test api."""
         return GenericResponse.from_dict(await self.get(API_TEST))
 
+    async def mm_update_available(self) -> QueryResponse:
+        """Get update available status."""
+        return QueryResponse.from_dict(await self.get(API_MM_UPDATE_AVAILABLE))
+    
     async def update_available(self) -> QueryResponse:
         """Get update available status."""
         return QueryResponse.from_dict(await self.get(API_UPDATE_AVAILABLE))

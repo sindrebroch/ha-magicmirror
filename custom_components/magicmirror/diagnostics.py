@@ -27,5 +27,6 @@ async def async_get_config_entry_diagnostics(
         "brightness": data.brightness,
         "monitor_status": data.monitor_status,
         "update_available": data.update_available,
+        "module_updates": data.module_updates,
         "modules": str(data.modules),
     }

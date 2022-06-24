@@ -17,6 +17,7 @@ from custom_components.magicmirror.const import DOMAIN, LOGGER
 from custom_components.magicmirror.models import (
     MagicMirrorData,
     ModuleResponse,
+    ModuleUpdateResponse,
     MonitorResponse,
     QueryResponse,
 )
@@ -55,7 +56,8 @@ class MagicMirrorDataUpdateCoordinator(DataUpdateCoordinator):
 
         try:
             async with timeout(10):
-                update: QueryResponse = await self.api.update_available()
+                update: QueryResponse = await self.api.mm_update_available()
+                module_updates: QueryResponse = await self.api.update_available()
                 monitor: MonitorResponse = await self.api.monitor_status()
                 brightness: QueryResponse = await self.api.get_brightness()
                 modules: ModuleResponse = await self.api.get_modules()
@@ -68,10 +70,16 @@ class MagicMirrorDataUpdateCoordinator(DataUpdateCoordinator):
                     LOGGER.warning("Failed to fetch brightness for MagicMirror")
                 if not modules.success:
                     LOGGER.warning("Failed to fetch modules for MagicMirror")
+                if not module_updates.success:
+                    LOGGER.warning("Failed to fetch module updates for MagicMirror")
 
                 return MagicMirrorData(
                     monitor_status=monitor.monitor,
                     update_available=bool(update.result),
+                    module_updates=(
+                        ModuleUpdateResponse.from_dict(module_update)
+                        for module_update in module_updates.result
+                    ),
                     brightness=int(brightness.result),
                     modules=modules.data,
                 )

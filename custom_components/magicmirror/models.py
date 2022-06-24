@@ -83,11 +83,31 @@ class ModuleDataResponse:
 
 
 @attr.s(auto_attribs=True)
+class ModuleUpdateResponse:
+    """Class representing ModuleUpdateResponse."""
+
+    module: str
+    result: bool
+
+    @staticmethod
+    def from_dict(data: Dict[str, Any]) -> "ModuleUpdateResponse":
+        """Transform data to dict."""
+
+        LOGGER.debug("ModuleUpdateResponse=%s", data)
+
+        return ModuleUpdateResponse(
+            module=data.get("module"),
+            result=data.get("result"),
+        )
+
+
+@attr.s(auto_attribs=True)
 class MagicMirrorData:
     """Class representing MagicMirrorData."""
 
     monitor_status: str
     update_available: bool
+    module_updates: List[ModuleUpdateResponse]
     brightness: int
     modules: List[ModuleDataResponse]
 
