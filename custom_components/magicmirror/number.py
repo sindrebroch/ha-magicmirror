@@ -19,7 +19,7 @@ NUMBERS: tuple[NumberEntityDescription, ...] = (
         key=Entity.BRIGHTNESS.value,
         name="Magic Mirror Brightness",
         icon="mdi:television-ambient-light",
-        unit_of_measurement=PERCENTAGE,
+        native_unit_of_measurement=PERCENTAGE,
     ),
 )
 
