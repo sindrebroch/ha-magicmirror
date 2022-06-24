@@ -10,6 +10,7 @@ DOMAIN = "magicmirror"
 PLATFORMS = [
     Platform.BUTTON,
     Platform.LIGHT,
+    Platform.SWITCH,
     Platform.UPDATE,
 ]
 DATA_HASS_CONFIG = "mm_hass_config"
