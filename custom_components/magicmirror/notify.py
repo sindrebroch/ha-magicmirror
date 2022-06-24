@@ -1,6 +1,7 @@
 """Support for MagicMirror notifications."""
 import asyncio
 import logging
+from typing import Any
 
 import voluptuous as vol
 
@@ -40,7 +41,7 @@ class MagicMirrorNotificationService(BaseNotificationService):
         """Initialize the service."""
         self._notify = notify
 
-    async def async_send_message(self, message="", **kwargs):
+    async def async_send_message(self, message: str, **kwargs: Any) -> None:
         """Send a message to MagicMirror devices."""
 
         title = kwargs.get(ATTR_TITLE, "")
@@ -57,7 +58,7 @@ class MagicMirrorNotificationService(BaseNotificationService):
         try:
             await self._notify.alert(
                 title=title,
-                message=message,
+                msg=message,
                 timer=timer,
                 dropdown=bool(alert_type),
             )
