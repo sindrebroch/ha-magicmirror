@@ -37,7 +37,8 @@ async def async_setup_entry(
     coordinator: MagicMirrorDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]
 
     async_add_entities(
-        MagicMirrorModuleSwitch(coordinator, module) for module in coordinator.data.modules
+        MagicMirrorModuleSwitch(coordinator, module)
+        for module in coordinator.data.modules
     )
 
     for description in SWITCHES:
@@ -110,7 +111,9 @@ class MagicMirrorMonitorSwitch(MagicMirrorSwitch):
 
     def update_from_data(self) -> None:
         """Update sensor data."""
-        coordinator_data = self.coordinator.data.__getattribute__(self.entity_description.key)
+        coordinator_data = self.coordinator.data.__getattribute__(
+            self.entity_description.key
+        )
         self.sensor_data = True if coordinator_data == STATE_ON else False
 
     async def async_turn_on(self, **kwargs: Any) -> None:
@@ -161,21 +164,19 @@ class MagicMirrorModuleSwitch(MagicMirrorSwitch):
 
     def update_from_data(self) -> None:
         for module in self.coordinator.data.modules:
-            if module.name == self.entity_description.name:
+            if module.name == self.entity_description.key:
                 self.sensor_data = False if module.hidden else True
                 return
         self.sensor_data = "unknown"
 
     async def async_turn_on(self, **kwargs: Any) -> None:
         """Turn the entity on."""
-
         await self.coordinator.api.show_module(self.module.identifier)
         self.sensor_data = True
         await self.coordinator.async_request_refresh()
 
     async def async_turn_off(self, **kwargs: Any) -> None:
         """Turn the entity off."""
-        
         await self.coordinator.api.hide_module(self.module.identifier)
         self.sensor_data = False
         await self.coordinator.async_request_refresh()
