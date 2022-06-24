@@ -8,9 +8,8 @@ LOGGER: Logger = getLogger(__package__)
 
 DOMAIN = "magicmirror"
 PLATFORMS = [
-    Platform.BUTTON, 
-    Platform.NUMBER, 
-    Platform.SWITCH, 
+    Platform.BUTTON,
+    Platform.LIGHT,
     Platform.UPDATE,
 ]
 DATA_HASS_CONFIG = "mm_hass_config"

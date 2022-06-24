@@ -1,11 +1,10 @@
-"""BinarySensor file for MagicMirror."""
+"""Switch entity for MagicMirror."""
 
-from typing import Any, List
+from typing import Any
 
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, callback
-from homeassistant.const import STATE_ON
 from homeassistant.helpers.entity import (
     DeviceInfo,
     ToggleEntity,
@@ -16,15 +15,7 @@ from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from custom_components.magicmirror.const import DOMAIN, LOGGER
 from custom_components.magicmirror.coordinator import MagicMirrorDataUpdateCoordinator
-from custom_components.magicmirror.models import Entity, ModuleDataResponse
-
-SWITCHES: tuple[ToggleEntityDescription, ...] = (
-    ToggleEntityDescription(
-        key=Entity.MONITOR_STATUS.value,
-        name="MagicMirror Monitor",
-        icon="mdi:mirror",
-    ),
-)
+from custom_components.magicmirror.models import ModuleDataResponse
 
 
 async def async_setup_entry(
@@ -40,10 +31,6 @@ async def async_setup_entry(
         MagicMirrorModuleSwitch(coordinator, module)
         for module in coordinator.data.modules
     )
-
-    for description in SWITCHES:
-        if description.key == Entity.MONITOR_STATUS.value:
-            async_add_entities([MagicMirrorMonitorSwitch(coordinator, description)])
 
 
 class MagicMirrorSwitch(CoordinatorEntity, ToggleEntity):
@@ -102,31 +89,6 @@ class MagicMirrorSwitch(CoordinatorEntity, ToggleEntity):
         """Turn the entity off."""
 
         LOGGER.error("Switch not implemented")
-        self.sensor_data = False
-        await self.coordinator.async_request_refresh()
-
-
-class MagicMirrorMonitorSwitch(MagicMirrorSwitch):
-    """Define a MagicMirror entity."""
-
-    def update_from_data(self) -> None:
-        """Update sensor data."""
-        coordinator_data = self.coordinator.data.__getattribute__(
-            self.entity_description.key
-        )
-        self.sensor_data = True if coordinator_data == STATE_ON else False
-
-    async def async_turn_on(self, **kwargs: Any) -> None:
-        """Turn the entity on."""
-
-        await self.coordinator.api.monitor_on()
-        self.sensor_data = True
-        await self.coordinator.async_request_refresh()
-
-    async def async_turn_off(self, **kwargs: Any) -> None:
-        """Turn the entity off."""
-
-        await self.coordinator.api.monitor_off()
         self.sensor_data = False
         await self.coordinator.async_request_refresh()
 
