@@ -32,12 +32,12 @@ Requires [MMM-Remote-Control](https://github.com/Jopyth/MMM-Remote-Control) inst
 </details>
 
 ## Features
-### Switch
+### Light
 - Toggle monitor on/off
-- Show / hide modules (See [Note](https://github.com/sindrebroch/ha-magicmirror#note))
+- Change brightness
 
-### Number
-- Brightness
+### Switch
+- Show / hide modules (See [Note](https://github.com/sindrebroch/ha-magicmirror#note))
 
 ### Button
 - Shutdown host
