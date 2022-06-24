@@ -60,14 +60,14 @@ class MagicMirrorNumber(CoordinatorEntity, NumberEntity):
         self._attr_device_info = coordinator._attr_device_info
 
     @property
-    def value(self) -> float:
+    def native_value(self) -> float:
         return self.sensor_data
 
     def get_sensor_data(self) -> float:
         """Get sensor data."""
         return self.coordinator.data.__getattribute__(self.entity_description.key)
 
-    async def async_set_value(self, value: float) -> None:
+    async def async_set_native_value(self, value: float) -> None:
         """Update the current value."""
 
         await self.coordinator.api.brightness(int(value))
