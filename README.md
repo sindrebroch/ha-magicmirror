@@ -5,7 +5,7 @@
 
 [!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/sindrebroch)
 
-Requires [MMM-Remote-Control](https://github.com/Jopyth/MMM-Remote-Control) installed on your MagicMirror host, with an API-key configured.
+Requires [MMM-Remote-Control](https://github.com/sindrebroch/MMM-Remote-Control) installed on your MagicMirror host, with an API-key configured.
 
 ## Installation
 
