@@ -89,24 +89,32 @@ class MagicMirrorButton(CoordinatorEntity, ButtonEntity):
 
 
 class MagicMirrorShutdownButton(MagicMirrorButton):
+    """Shutdown button."""
+
     async def async_press(self) -> None:
         """Shut down magicmirror."""
         await self.coordinator.api.shutdown()
 
 
 class MagicMirrorRestartButton(MagicMirrorButton):
+    """Restart button."""
+
     async def async_press(self) -> None:
         """Restart magicmirror."""
         await self.coordinator.api.restart()
 
 
 class MagicMirrorRebootButton(MagicMirrorButton):
+    """Reboot button."""
+
     async def async_press(self) -> None:
         """Reboot magicmirror."""
         await self.coordinator.api.reboot()
 
 
 class MagicMirrorRefreshButton(MagicMirrorButton):
+    """Refresh button."""
+
     async def async_press(self) -> None:
         """Refresh magicmirror."""
         await self.coordinator.api.refresh()

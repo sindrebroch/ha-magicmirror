@@ -105,6 +105,22 @@ class MagicMirrorApiClient:
 
         return await self.handle_request(get)
 
+    async def system_call(self, path: str) -> None:
+        """Get request."""
+
+        get_url = f"{self.base_url}/{path}"
+        LOGGER.debug("GET url=%s. headers=%s", get_url, self.headers)
+
+        assert self._session is not None
+
+        try:
+            await self._session.get(
+                url=get_url,
+                headers=self.headers,
+            )
+        except aiohttp.ServerDisconnectedError:
+            LOGGER.info("Error: The connection was closed early by the remote host.")
+
     async def post(self, path: str, data: str = None) -> Any:
         """Post request."""
 
@@ -153,17 +169,21 @@ class MagicMirrorApiClient:
         """Toggle monitor."""
         return MonitorResponse.from_dict(await self.get(API_MONITOR_TOGGLE))
 
-    async def shutdown(self) -> Any:
+    async def shutdown(self) -> None:
         """Shutdown."""
-        return self.get(API_SHUTDOWN)
+        await self.system_call(API_SHUTDOWN)
 
-    async def reboot(self) -> Any:
+    async def reboot(self) -> None:
         """Reboot."""
-        return self.get(API_REBOOT)
+        await self.system_call(API_REBOOT)
 
-    async def restart(self) -> Any:
+    async def restart(self) -> None:
         """Restart."""
-        return self.get(API_RESTART)
+        await self.system_call(API_RESTART)
+
+    async def refresh(self) -> None:
+        """Refresh."""
+        await self.system_call(API_REFRESH)
 
     async def minimize(self) -> Any:
         """Minimize."""
@@ -176,10 +196,6 @@ class MagicMirrorApiClient:
     async def devtools(self) -> Any:
         """Devtools."""
         return await self.get(API_DEVTOOLS)
-
-    async def refresh(self) -> Any:
-        """Refresh."""
-        return await self.get(API_REFRESH)
 
     async def brightness(self, brightness: str) -> Any:
         """Brightness."""
