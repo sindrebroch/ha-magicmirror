@@ -46,7 +46,8 @@ Requires [MMM-Remote-Control](https://github.com/sindrebroch/MMM-Remote-Control)
 - Refresh browser
 
 ### Update
-- MagicMirror Update Available
+- MagicMirror update
+- Module update (supports installing new version)
 
 ### Notify
 ```
