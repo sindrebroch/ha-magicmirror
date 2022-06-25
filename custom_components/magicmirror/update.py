@@ -33,7 +33,7 @@ async def async_setup_entry(
                 coordinator,
                 EntityDescription(
                     key=Entity.UPDATE_AVAILABLE.value,
-                    name="MagicMirror Update Available",
+                    name="MagicMirror update",
                 ),
             )
         ]
@@ -113,16 +113,20 @@ class MagicMirrorModuleUpdate(MagicMirrorUpdate):
 
         self.coordinator = coordinator
 
-        self._attr_name = f"Update available {module.name}"
+        self._attr_name = f"{module.name} update"
         self._attr_unique_id = module.identifier
+        self._attr_title = module.name
+        self._attr_release_url = None
+        self._attr_latest_version = LATEST_VERSION
+
         self.sensor_data = self.get_sensor_data()
         self.entity_id = f"update.{module.name}"
 
     def get_sensor_data(self) -> bool:
         """Get sensor data."""
-        for modules in self.coordinator.data.module_updates:
-            if self.module.name == modules.module:
-                return modules.result
+        for module in self.coordinator.data.module_updates:
+            if self.module.name == module.module:
+                return module.result
         return False
 
     @callback
@@ -140,3 +144,8 @@ class MagicMirrorModuleUpdate(MagicMirrorUpdate):
             identifiers={(DOMAIN, self.entity_description.key)},
             configuration_url=f"{self.coordinator.api.base_url}/remote.html",
         )
+
+    @property
+    def installed_version(self) -> str:
+        """Version installed and in use."""
+        return OLD_VERSION if self.sensor_data else LATEST_VERSION
