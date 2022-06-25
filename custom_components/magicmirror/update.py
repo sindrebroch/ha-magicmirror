@@ -167,12 +167,12 @@ class MagicMirrorModuleUpdate(CoordinatorEntity, UpdateEntity):
         )
 
     @property
-    def latest_version(self) -> str | None:
+    def latest_version(self) -> str or None:
         """Latest version available for install."""
         return LATEST_VERSION
 
     @property
-    def release_url(self) -> str | None:
+    def release_url(self) -> str or None:
         """URL to the full release notes of the latest version available."""
         return self.sensor_data.remote if self.sensor_data is not None else None
 
