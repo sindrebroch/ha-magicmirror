@@ -1,6 +1,7 @@
 """Update for MagicMirror."""
 
-from homeassistant.components.update import UpdateEntity
+from typing import Any
+from homeassistant.components.update import UpdateEntity, UpdateEntityFeature
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import STATE_ON
@@ -119,6 +120,10 @@ class MagicMirrorModuleUpdate(MagicMirrorUpdate):
         self._attr_release_url = None
         self._attr_latest_version = LATEST_VERSION
 
+        self._attr_supported_features = (
+            UpdateEntityFeature.INSTALL | UpdateEntityFeature.PROGRESS
+        )
+
         self.sensor_data = self.get_sensor_data()
         self.entity_id = f"update.{module.name}"
 
@@ -149,3 +154,12 @@ class MagicMirrorModuleUpdate(MagicMirrorUpdate):
     def installed_version(self) -> str:
         """Version installed and in use."""
         return OLD_VERSION if self.sensor_data else LATEST_VERSION
+
+    async def async_install(
+        self, version: str or None, backup: bool, **kwargs: Any
+    ) -> None:
+        """Install update."""
+
+        self._attr_in_progress = True
+        await self.coordinator.api.module_update(self.module.name)
+        self._attr_in_progress = False
