@@ -9,6 +9,7 @@ from custom_components.magicmirror.const import LOGGER
 from custom_components.magicmirror.models import (
     GenericResponse,
     ModuleResponse,
+    ModuleUpdateResponses,
     MonitorResponse,
     QueryResponse,
 )
@@ -149,10 +150,10 @@ class MagicMirrorApiClient:
     async def mm_update_available(self) -> QueryResponse:
         """Get update available status."""
         return QueryResponse.from_dict(await self.get(API_MM_UPDATE_AVAILABLE))
-    
-    async def update_available(self) -> QueryResponse:
+
+    async def update_available(self) -> ModuleUpdateResponses:
         """Get update available status."""
-        return QueryResponse.from_dict(await self.get(API_UPDATE_AVAILABLE))
+        return ModuleUpdateResponses.from_dict(await self.get(API_UPDATE_AVAILABLE))
 
     async def monitor_status(self) -> MonitorResponse:
         """Get monitor status."""

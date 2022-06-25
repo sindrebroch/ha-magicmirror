@@ -1,6 +1,6 @@
 """Update for MagicMirror."""
 
-from typing import Any
+from typing import Any, List
 from homeassistant.components.update import UpdateEntity, UpdateEntityFeature
 
 from homeassistant.config_entries import ConfigEntry
@@ -15,6 +15,7 @@ from custom_components.magicmirror.coordinator import MagicMirrorDataUpdateCoord
 from custom_components.magicmirror.models import (
     Entity,
     ModuleDataResponse,
+    ModuleUpdateResponse,
 )
 
 OLD_VERSION = "outdated"
@@ -44,10 +45,15 @@ async def async_setup_entry(
     modules = list(coordinator.data.modules)
     updates = list(coordinator.data.module_updates)
 
+    update_entities: List[MagicMirrorModuleUpdate] = []
     for module in modules:
         for update in updates:
             if module.name == update.module:
-                async_add_entities([MagicMirrorModuleUpdate(coordinator, module)])
+                update_entities.append(
+                    MagicMirrorModuleUpdate(coordinator, module, update)
+                )
+
+    async_add_entities(update_entities)
 
 
 class MagicMirrorUpdate(CoordinatorEntity, UpdateEntity):
@@ -97,48 +103,78 @@ class MagicMirrorUpdate(CoordinatorEntity, UpdateEntity):
         return OLD_VERSION if self.sensor_data else LATEST_VERSION
 
 
-class MagicMirrorModuleUpdate(MagicMirrorUpdate):
+class MagicMirrorModuleUpdate(CoordinatorEntity, UpdateEntity):
     """MagicMirror Module Update class."""
 
+    module: ModuleDataResponse
     coordinator: MagicMirrorDataUpdateCoordinator
 
     def __init__(
         self,
         coordinator: MagicMirrorDataUpdateCoordinator,
         module: ModuleDataResponse,
+        update: ModuleUpdateResponse,
     ) -> None:
         """Initialize update entity."""
 
-        super().__init__(coordinator, EntityDescription(key=module.name))
-        self.module = module
-
+        super().__init__(coordinator)
         self.coordinator = coordinator
+        self.entity_description = EntityDescription(key=module.name)
 
+        self.module = module
         self._attr_name = f"{module.name} update"
         self._attr_unique_id = module.identifier
         self._attr_title = module.name
-        self._attr_release_url = None
-        self._attr_latest_version = LATEST_VERSION
-
         self._attr_supported_features = (
             UpdateEntityFeature.INSTALL | UpdateEntityFeature.PROGRESS
         )
 
-        self.sensor_data = self.get_sensor_data()
+        self.sensor_data = update
         self.entity_id = f"update.{module.name}"
 
-    def get_sensor_data(self) -> bool:
+    def get_sensor_data(self) -> ModuleUpdateResponse or None:
         """Get sensor data."""
+
         for module in self.coordinator.data.module_updates:
             if self.module.name == module.module:
-                return module.result
-        return False
+                return module
+        return None
 
     @callback
     def _handle_coordinator_update(self) -> None:
         """Handle data update."""
+
         self.sensor_data = self.get_sensor_data()
         super()._handle_coordinator_update()
+
+    async def async_install(
+        self, version: str or None, backup: bool, **kwargs: Any
+    ) -> None:
+        """Install update."""
+
+        self._attr_in_progress = True
+        await self.coordinator.api.module_update(self.module.name)
+        self._attr_in_progress = False
+
+    @property
+    def installed_version(self) -> str:
+        """Version installed and in use."""
+
+        return (
+            OLD_VERSION
+            if self.sensor_data is None or self.sensor_data.result
+            else LATEST_VERSION
+        )
+
+    @property
+    def latest_version(self) -> str | None:
+        """Latest version available for install."""
+        return LATEST_VERSION
+
+    @property
+    def release_url(self) -> str | None:
+        """URL to the full release notes of the latest version available."""
+        return self.sensor_data.remote if self.sensor_data is not None else None
 
     @property
     def device_info(self) -> DeviceInfo or None:
@@ -149,17 +185,3 @@ class MagicMirrorModuleUpdate(MagicMirrorUpdate):
             identifiers={(DOMAIN, self.entity_description.key)},
             configuration_url=f"{self.coordinator.api.base_url}/remote.html",
         )
-
-    @property
-    def installed_version(self) -> str:
-        """Version installed and in use."""
-        return OLD_VERSION if self.sensor_data else LATEST_VERSION
-
-    async def async_install(
-        self, version: str or None, backup: bool, **kwargs: Any
-    ) -> None:
-        """Install update."""
-
-        self._attr_in_progress = True
-        await self.coordinator.api.module_update(self.module.name)
-        self._attr_in_progress = False

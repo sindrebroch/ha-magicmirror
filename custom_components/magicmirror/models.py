@@ -88,6 +88,9 @@ class ModuleUpdateResponse:
 
     module: str
     result: bool
+    remote: str
+    lsremote: str
+    behind: int
 
     @staticmethod
     def from_dict(data: Dict[str, Any]) -> "ModuleUpdateResponse":
@@ -97,7 +100,10 @@ class ModuleUpdateResponse:
 
         return ModuleUpdateResponse(
             module=data.get("module"),
-            result=data.get("result"),
+            result=bool(data.get("result", False)),
+            remote=data.get("remote") or "",
+            lsremote=data.get("lsremote") or "",
+            behind=int(data.get("behind", 0)),
         )
 
 
@@ -167,6 +173,29 @@ class Query:
         LOGGER.debug("Query=%s", query)
 
         return Query(data=query.get("data"))
+
+
+@attr.s(auto_attribs=True)
+class ModuleUpdateResponses:
+    """Class representing Module Response."""
+
+    success: bool
+    result: List[ModuleUpdateResponse]
+
+    @staticmethod
+    def from_dict(data: Dict[str, Any]) -> "ModuleUpdateResponses":
+        """Transform data to dict."""
+
+        LOGGER.debug("ModuleUpdateResponses=%s", data)
+
+        module_update: List[ModuleUpdateResponse] = []
+        for module in data.get("result"):
+            module_update.append(ModuleUpdateResponse.from_dict(module))
+
+        return ModuleUpdateResponses(
+            success=bool(data.get("success")),
+            result=module_update,
+        )
 
 
 @attr.s(auto_attribs=True)
