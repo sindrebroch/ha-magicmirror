@@ -55,7 +55,7 @@ class MagicMirrorDataUpdateCoordinator(DataUpdateCoordinator):
         """Update data via library."""
 
         try:
-            async with timeout(10):
+            async with timeout(20):
                 update: QueryResponse = await self.api.mm_update_available()
                 module_updates: ModuleUpdateResponses = (
                     await self.api.update_available()
