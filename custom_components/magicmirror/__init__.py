@@ -73,6 +73,7 @@ async def async_setup_notify(hass: HomeAssistant, entry: ConfigEntry) -> bool:
             hass.data[DATA_HASS_CONFIG],
         )
     )
+    return True
 
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
