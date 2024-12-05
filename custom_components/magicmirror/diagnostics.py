@@ -1,12 +1,13 @@
 """Diagnostics support for MagicMirror."""
+
 from __future__ import annotations
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
-from custom_components.magicmirror.api import MagicMirrorApiClient
 
-from custom_components.magicmirror.coordinator import MagicMirrorDataUpdateCoordinator
+from custom_components.magicmirror.api import MagicMirrorApiClient
 from custom_components.magicmirror.const import DOMAIN
+from custom_components.magicmirror.coordinator import MagicMirrorDataUpdateCoordinator
 
 
 async def async_get_config_entry_diagnostics(

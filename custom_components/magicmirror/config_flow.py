@@ -6,7 +6,6 @@ from typing import Any
 
 import aiohttp
 import voluptuous as vol
-
 from homeassistant import config_entries
 from homeassistant.const import CONF_API_KEY, CONF_HOST, CONF_PORT
 from homeassistant.data_entry_flow import FlowResult
@@ -36,7 +35,6 @@ class MagicMirrorFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
         """Handle a flow initialized by the user."""
 
         if user_input is not None:
-
             host = user_input[CONF_HOST]
             port = user_input[CONF_PORT]
             api_key = user_input[CONF_API_KEY]

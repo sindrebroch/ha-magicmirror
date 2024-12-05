@@ -1,8 +1,8 @@
 """Update for MagicMirror."""
 
-from typing import Any, List
-from homeassistant.components.update import UpdateEntity, UpdateEntityFeature
+from typing import Any
 
+from homeassistant.components.update import UpdateEntity, UpdateEntityFeature
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import STATE_ON
 from homeassistant.core import HomeAssistant, callback
@@ -10,7 +10,7 @@ from homeassistant.helpers.entity import DeviceInfo, EntityCategory, EntityDescr
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
-from custom_components.magicmirror.const import DOMAIN, LOGGER
+from custom_components.magicmirror.const import DOMAIN
 from custom_components.magicmirror.coordinator import MagicMirrorDataUpdateCoordinator
 from custom_components.magicmirror.models import (
     Entity,

@@ -14,7 +14,6 @@ from custom_components.magicmirror.models import (
     QueryResponse,
 )
 
-
 # Mirror control
 API_TEST = "api/test"
 API_MONITOR = "api/monitor"
@@ -77,7 +76,6 @@ class MagicMirrorApiClient:
         LOGGER.debug("pre handle_request=%s", response)
 
         async with response as resp:
-
             if resp.status == HTTPStatus.FORBIDDEN:
                 raise Exception(f"Forbidden {resp}")  # Probably need API-key
 
@@ -121,7 +119,9 @@ class MagicMirrorApiClient:
                 headers=self.headers,
             )
         except (aiohttp.ClientConnectionError, aiohttp.ServerDisconnectedError) as e:
-            LOGGER.error("Connection error: %s. Check if the MagicMirror service is running.", e)
+            LOGGER.error(
+                "Connection error: %s. Check if the MagicMirror service is running.", e
+            )
 
     async def post(self, path: str, data: str = None) -> Any:
         """Post request."""

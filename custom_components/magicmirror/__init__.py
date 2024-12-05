@@ -1,21 +1,28 @@
 """The MagicMirror integration."""
+
 from __future__ import annotations
 
-from homeassistant.core import HomeAssistant
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import (
     CONF_API_KEY,
     CONF_HOST,
-    CONF_PORT,
     CONF_NAME,
+    CONF_PORT,
     Platform,
 )
-from homeassistant.helpers import discovery, device_registry as dr
+from homeassistant.core import HomeAssistant
+from homeassistant.helpers import device_registry as dr
+from homeassistant.helpers import discovery
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.typing import ConfigType
 
 from custom_components.magicmirror.api import MagicMirrorApiClient
-from custom_components.magicmirror.const import ATTR_CONFIG_ENTRY_ID, DATA_HASS_CONFIG, DOMAIN, PLATFORMS
+from custom_components.magicmirror.const import (
+    ATTR_CONFIG_ENTRY_ID,
+    DATA_HASS_CONFIG,
+    DOMAIN,
+    PLATFORMS,
+)
 from custom_components.magicmirror.coordinator import MagicMirrorDataUpdateCoordinator
 
 
@@ -24,6 +31,7 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
 
     hass.data[DATA_HASS_CONFIG] = config
     return True
+
 
 async def async_remove_config_entry_device(
     hass: HomeAssistant, config_entry: ConfigEntry, device_entry: dr.DeviceEntry

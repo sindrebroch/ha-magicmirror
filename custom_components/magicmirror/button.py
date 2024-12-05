@@ -1,11 +1,9 @@
 """Button for MagicMirror."""
 
-from custom_components.magicmirror.models import Entity
-
 from homeassistant.components.button import (
+    ButtonDeviceClass,
     ButtonEntity,
     ButtonEntityDescription,
-    ButtonDeviceClass,
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
@@ -14,6 +12,7 @@ from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from custom_components.magicmirror.const import DOMAIN
 from custom_components.magicmirror.coordinator import MagicMirrorDataUpdateCoordinator
+from custom_components.magicmirror.models import Entity
 
 
 async def async_setup_entry(
