@@ -41,19 +41,19 @@ async def async_setup_entry(
         ]
     )
 
-    coordinator: MagicMirrorDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]
-    modules = list(coordinator.data.modules)
-    updates = list(coordinator.data.module_updates)
+    # coordinator: MagicMirrorDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]
+    # modules = list(coordinator.data.modules)
+    # updates = list(coordinator.data.module_updates)
 
-    update_entities: List[MagicMirrorModuleUpdate] = []
-    for module in modules:
-        for update in updates:
-            if module.name == update.module:
-                update_entities.append(
-                    MagicMirrorModuleUpdate(coordinator, module, update)
-                )
+    # update_entities: List[MagicMirrorModuleUpdate] = []
+    # for module in modules:
+    #     for update in updates:
+    #         if module.name == update.module:
+    #             update_entities.append(
+    #                 MagicMirrorModuleUpdate(coordinator, module, update)
+    #             )
 
-    async_add_entities(update_entities)
+    # async_add_entities(update_entities)
 
 
 class MagicMirrorUpdate(CoordinatorEntity, UpdateEntity):
