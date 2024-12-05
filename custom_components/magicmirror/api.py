@@ -120,8 +120,8 @@ class MagicMirrorApiClient:
                 url=get_url,
                 headers=self.headers,
             )
-        except aiohttp.ServerDisconnectedError:
-            LOGGER.info("Error: The connection was closed early by the remote host.")
+        except (aiohttp.ClientConnectionError, aiohttp.ServerDisconnectedError) as e:
+            LOGGER.error("Connection error: %s. Check if the MagicMirror service is running.", e)
 
     async def post(self, path: str, data: str = None) -> Any:
         """Post request."""
