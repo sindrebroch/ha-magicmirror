@@ -36,6 +36,7 @@ class MagicMirrorDataUpdateCoordinator(DataUpdateCoordinator):
     ) -> None:
         """Initialize."""
         self.api = api
+
         self._attr_device_info = DeviceInfo(
             name="MagicMirror",
             model="MagicMirror",
@@ -55,7 +56,7 @@ class MagicMirrorDataUpdateCoordinator(DataUpdateCoordinator):
         """Update data via library."""
         try:
             async with timeout(20):
-                # update: QueryResponse = await self.api.mm_update_available()
+                update: QueryResponse = await self.api.mm_update_available()
                 # module_updates: ModuleUpdateResponses = (
                 #    await self.api.update_available()
                 # )
@@ -65,8 +66,8 @@ class MagicMirrorDataUpdateCoordinator(DataUpdateCoordinator):
 
                 if not monitor.success:
                     LOGGER.warning("Failed to fetch monitor-status for MagicMirror")
-                # if not update.success:
-                #    LOGGER.warning("Failed to fetch update-status for MagicMirror")
+                if not update.success:
+                    LOGGER.warning("Failed to fetch update-status for MagicMirror")
                 if not brightness.success:
                     LOGGER.warning("Failed to fetch brightness for MagicMirror")
                 if not modules.success:
@@ -76,7 +77,7 @@ class MagicMirrorDataUpdateCoordinator(DataUpdateCoordinator):
 
                 return MagicMirrorData(
                     monitor_status=monitor.monitor,
-                    update_available=False,
+                    update_available=update.result,
                     module_updates=False,
                     brightness=int(brightness.result),
                     modules=modules.data,

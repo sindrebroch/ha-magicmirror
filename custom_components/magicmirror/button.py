@@ -21,7 +21,6 @@ async def async_setup_entry(
     async_add_entities: AddEntitiesCallback,
 ) -> None:
     """Add MagicMirror entities from a config_entry."""
-
     coordinator: MagicMirrorDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]
 
     async_add_entities(
@@ -75,13 +74,12 @@ class MagicMirrorButton(CoordinatorEntity, ButtonEntity):
         description: ButtonEntityDescription,
     ) -> None:
         """Initialize."""
-
         super().__init__(coordinator)
         self.coordinator = coordinator
         self.entity_description = description
 
         self._attr_unique_id = f"{description.key}"
-        self._attr_device_info = coordinator._attr_device_info
+        self._attr_device_info = self.coordinator._attr_device_info
 
     async def async_press(self) -> None:
         """Handle the button press."""

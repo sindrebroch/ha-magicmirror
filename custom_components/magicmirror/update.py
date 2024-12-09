@@ -26,7 +26,6 @@ async def async_setup_entry(
     hass: HomeAssistant, entry: ConfigEntry, async_add_entities: AddEntitiesCallback
 ) -> None:
     """Set up the MagicMirror update entities."""
-
     coordinator: MagicMirrorDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]
 
     async_add_entities(
@@ -67,7 +66,6 @@ class MagicMirrorUpdate(CoordinatorEntity, UpdateEntity):
         description: EntityDescription,
     ) -> None:
         """Initialize update entity."""
-
         super().__init__(coordinator)
 
         self.coordinator = coordinator
@@ -76,7 +74,7 @@ class MagicMirrorUpdate(CoordinatorEntity, UpdateEntity):
         self.sensor_data = self.get_sensor_data()
 
         self._attr_unique_id = f"{description.name}"
-        self._attr_device_info = coordinator._attr_device_info
+        self._attr_device_info = self.coordinator._attr_device_info
         self._attr_entity_category = EntityCategory.DIAGNOSTIC
 
         self._attr_title = description.name
@@ -85,11 +83,12 @@ class MagicMirrorUpdate(CoordinatorEntity, UpdateEntity):
         )
 
         self._attr_latest_version = LATEST_VERSION
+        self._attr_display_precision = 0
 
     def get_sensor_data(self) -> bool:
         """Get sensor data."""
         state = self.coordinator.data.__getattribute__(self.entity_description.key)
-        return True if state == STATE_ON else False
+        return state == STATE_ON
 
     @callback
     def _handle_coordinator_update(self) -> None:
@@ -116,7 +115,6 @@ class MagicMirrorModuleUpdate(CoordinatorEntity, UpdateEntity):
         update: ModuleUpdateResponse,
     ) -> None:
         """Initialize update entity."""
-
         super().__init__(coordinator)
         self.coordinator = coordinator
         self.entity_description = EntityDescription(key=module.name)
@@ -132,9 +130,8 @@ class MagicMirrorModuleUpdate(CoordinatorEntity, UpdateEntity):
         self.sensor_data = update
         self.entity_id = f"update.{module.name}"
 
-    def get_sensor_data(self) -> ModuleUpdateResponse or None:
+    def get_sensor_data(self) -> ModuleUpdateResponse | None:
         """Get sensor data."""
-
         for module in self.coordinator.data.module_updates:
             if self.module.name == module.module:
                 return module
@@ -143,15 +140,13 @@ class MagicMirrorModuleUpdate(CoordinatorEntity, UpdateEntity):
     @callback
     def _handle_coordinator_update(self) -> None:
         """Handle data update."""
-
         self.sensor_data = self.get_sensor_data()
         super()._handle_coordinator_update()
 
     async def async_install(
-        self, version: str or None, backup: bool, **kwargs: Any
+        self, version: str | None, backup: bool, **kwargs: Any
     ) -> None:
         """Install update."""
-
         self._attr_in_progress = True
         await self.coordinator.api.module_update(self.module.name)
         self._attr_in_progress = False
@@ -159,7 +154,6 @@ class MagicMirrorModuleUpdate(CoordinatorEntity, UpdateEntity):
     @property
     def installed_version(self) -> str:
         """Version installed and in use."""
-
         return (
             OLD_VERSION
             if self.sensor_data is None or self.sensor_data.result
@@ -167,17 +161,17 @@ class MagicMirrorModuleUpdate(CoordinatorEntity, UpdateEntity):
         )
 
     @property
-    def latest_version(self) -> str or None:
+    def latest_version(self) -> str | None:
         """Latest version available for install."""
         return LATEST_VERSION
 
     @property
-    def release_url(self) -> str or None:
+    def release_url(self) -> str | None:
         """URL to the full release notes of the latest version available."""
         return self.sensor_data.remote if self.sensor_data is not None else None
 
     @property
-    def device_info(self) -> DeviceInfo or None:
+    def device_info(self) -> DeviceInfo | None:
         return DeviceInfo(
             name=self.entity_description.key,
             model=self.entity_description.key,

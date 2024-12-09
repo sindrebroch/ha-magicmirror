@@ -26,7 +26,6 @@ async def async_setup_entry(
     async_add_entities: AddEntitiesCallback,
 ) -> None:
     """Add MagicMirror entities from a config_entry."""
-
     coordinator: MagicMirrorDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]
 
     async_add_entities(
@@ -55,7 +54,6 @@ class MagicMirrorLight(CoordinatorEntity, LightEntity):
         description: LightEntityDescription,
     ) -> None:
         """Initialize."""
-
         super().__init__(coordinator)
         self.coordinator = coordinator
         self.entity_description = description
@@ -70,11 +68,10 @@ class MagicMirrorLight(CoordinatorEntity, LightEntity):
     @property
     def is_on(self) -> bool:
         """Return true if the switch is on."""
-
         return self.monitor_state
 
     @property
-    def icon(self):
+    def icon(self) -> str:
         """Return the icon to use in the frontend."""
         return (
             "mdi:toggle-switch-outline"
@@ -86,12 +83,8 @@ class MagicMirrorLight(CoordinatorEntity, LightEntity):
         """Update sensor data."""
         coordinator_data = self.coordinator.data
         self.monitor_state = (
-            True
-            if coordinator_data.__getattribute__(Entity.MONITOR_STATUS.value)
-            == STATE_ON
-            else False
+            coordinator_data.__getattribute__(Entity.MONITOR_STATUS.value) == STATE_ON
         )
-
         self.brightness_state = int(
             coordinator_data.__getattribute__(Entity.BRIGHTNESS.value)
         )
@@ -99,13 +92,11 @@ class MagicMirrorLight(CoordinatorEntity, LightEntity):
     @callback
     def _handle_coordinator_update(self) -> None:
         """Handle data update."""
-
         self.update_from_data()
         super()._handle_coordinator_update()
 
     async def async_turn_on(self, **kwargs: Any) -> None:
         """Turn the entity on."""
-
         if ATTR_BRIGHTNESS in kwargs:
             await self.coordinator.api.brightness(
                 ceil(kwargs[ATTR_BRIGHTNESS] * 100 / 255.0)
@@ -117,13 +108,11 @@ class MagicMirrorLight(CoordinatorEntity, LightEntity):
 
     async def async_turn_off(self, **kwargs: Any) -> None:
         """Turn the entity off."""
-
         await self.coordinator.api.monitor_off()
         self.monitor_state = False
         await self.coordinator.async_request_refresh()
 
     @property
-    def brightness(self) -> int or None:
+    def brightness(self) -> int | None:
         """Return the brightness of the light."""
-
         return ceil(self.brightness_state * 255 / 100)

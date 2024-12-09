@@ -1,7 +1,7 @@
 """Models for MagicMirror."""
 
 from enum import Enum
-from typing import Any, Dict, List
+from typing import Any
 
 import attr
 
@@ -61,9 +61,8 @@ class ModuleDataResponse:
     actions: str  # optional # Dict[str, ActionsDict]
 
     @staticmethod
-    def from_dict(data: Dict[str, Any]) -> "ModuleDataResponse":
+    def from_dict(data: dict[str, Any]) -> "ModuleDataResponse":
         """Transform data to dict."""
-
         LOGGER.debug("ModuleDataResponse=%s", data)
 
         return ModuleDataResponse(
@@ -93,9 +92,8 @@ class ModuleUpdateResponse:
     behind: int
 
     @staticmethod
-    def from_dict(data: Dict[str, Any]) -> "ModuleUpdateResponse":
+    def from_dict(data: dict[str, Any]) -> "ModuleUpdateResponse":
         """Transform data to dict."""
-
         LOGGER.debug("ModuleUpdateResponse=%s", data)
 
         return ModuleUpdateResponse(
@@ -113,9 +111,9 @@ class MagicMirrorData:
 
     monitor_status: str
     update_available: bool
-    module_updates: List[ModuleUpdateResponse]
+    module_updates: list[ModuleUpdateResponse]
     brightness: int
-    modules: List[ModuleDataResponse]
+    modules: list[ModuleDataResponse]
 
 
 @attr.s(auto_attribs=True)
@@ -123,15 +121,14 @@ class ModuleResponse:
     """Class representing Module Response."""
 
     success: bool
-    data: List[ModuleDataResponse]
+    data: list[ModuleDataResponse]
 
     @staticmethod
-    def from_dict(data: Dict[str, Any]) -> "ModuleResponse":
+    def from_dict(data: dict[str, Any]) -> "ModuleResponse":
         """Transform data to dict."""
-
         LOGGER.debug("ModuleResponse=%s", data)
 
-        modules: List[ModuleDataResponse] = []
+        modules: list[ModuleDataResponse] = []
         for module in data.get("data"):
             modules.append(ModuleDataResponse.from_dict(module))
 
@@ -149,9 +146,8 @@ class MonitorResponse:
     monitor: str
 
     @staticmethod
-    def from_dict(data: Dict[str, Any]) -> "MonitorResponse":
+    def from_dict(data: dict[str, Any]) -> "MonitorResponse":
         """Transform data to dict."""
-
         LOGGER.debug("MonitorResponse=%s", data)
 
         return MonitorResponse(
@@ -167,11 +163,9 @@ class Query:
     data: str
 
     @staticmethod
-    def from_dict(query: Dict[str, Any]) -> "Query":
+    def from_dict(query: dict[str, Any]) -> "Query":
         """Transform data to dict."""
-
         LOGGER.debug("Query=%s", query)
-
         return Query(data=query.get("data"))
 
 
@@ -180,15 +174,14 @@ class ModuleUpdateResponses:
     """Class representing Module Response."""
 
     success: bool
-    result: List[ModuleUpdateResponse]
+    result: list[ModuleUpdateResponse]
 
     @staticmethod
-    def from_dict(data: Dict[str, Any]) -> "ModuleUpdateResponses":
+    def from_dict(data: dict[str, Any]) -> "ModuleUpdateResponses":
         """Transform data to dict."""
-
         LOGGER.debug("ModuleUpdateResponses=%s", data)
 
-        module_update: List[ModuleUpdateResponse] = []
+        module_update: list[ModuleUpdateResponse] = []
         for module in data.get("result"):
             module_update.append(ModuleUpdateResponse.from_dict(module))
 
@@ -207,9 +200,8 @@ class QueryResponse:
     query: Query
 
     @staticmethod
-    def from_dict(data: Dict[str, Any]) -> "QueryResponse":
+    def from_dict(data: dict[str, Any]) -> "QueryResponse":
         """Transform data to dict."""
-
         LOGGER.debug("QueryResponse=%s", data)
 
         return QueryResponse(
@@ -226,9 +218,8 @@ class GenericResponse:
     success: bool
 
     @staticmethod
-    def from_dict(data: Dict[str, Any]) -> "GenericResponse":
+    def from_dict(data: dict[str, Any]) -> "GenericResponse":
         """Transform data to dict."""
-
         LOGGER.debug("GenericResponse=%s", data)
 
         return GenericResponse(

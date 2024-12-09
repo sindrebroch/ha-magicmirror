@@ -114,7 +114,7 @@ class MagicMirrorModuleSwitch(MagicMirrorSwitch):
         self.update_from_data()
 
     @property
-    def device_info(self) -> DeviceInfo or None:
+    def device_info(self) -> DeviceInfo | None:
         return DeviceInfo(
             name=self.entity_description.key,
             model=self.entity_description.key,

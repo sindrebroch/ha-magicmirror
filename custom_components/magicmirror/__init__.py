@@ -28,7 +28,6 @@ from custom_components.magicmirror.coordinator import MagicMirrorDataUpdateCoord
 
 async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
     """Set up the MagicMirror component."""
-
     hass.data[DATA_HASS_CONFIG] = config
     return True
 
@@ -42,10 +41,10 @@ async def async_remove_config_entry_device(
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up MagicMirror from a config entry."""
-
     hass.data.setdefault(DOMAIN, {})
 
     api = MagicMirrorApiClient(
+        name=entry.data[CONF_NAME],
         host=entry.data[CONF_HOST],
         port=entry.data[CONF_PORT],
         api_key=entry.data[CONF_API_KEY],
@@ -66,9 +65,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
 
 async def async_setup_notify(hass: HomeAssistant, entry: ConfigEntry) -> bool:
-    """Setup notify platform."""
-    # set up notify platform, no entry support for notify component yet,
-    # have to use discovery to load platform.
+    """Set up notification platform."""
     hass.async_create_task(
         discovery.async_load_platform(
             hass,
@@ -86,7 +83,6 @@ async def async_setup_notify(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Unload a config entry."""
-
     unload_ok = await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
 
     if unload_ok:

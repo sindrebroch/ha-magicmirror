@@ -7,7 +7,7 @@ from typing import Any
 import aiohttp
 import voluptuous as vol
 from homeassistant import config_entries
-from homeassistant.const import CONF_API_KEY, CONF_HOST, CONF_PORT
+from homeassistant.const import CONF_API_KEY, CONF_HOST, CONF_NAME, CONF_PORT
 from homeassistant.data_entry_flow import FlowResult
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
@@ -17,6 +17,7 @@ from custom_components.magicmirror.models import GenericResponse
 
 SCHEMA = vol.Schema(
     {
+        vol.Required(CONF_NAME, default="MagicMirror"): str,
         vol.Required(CONF_HOST): str,
         vol.Required(CONF_PORT, default="8080"): str,
         vol.Required(CONF_API_KEY): str,
@@ -33,8 +34,8 @@ class MagicMirrorFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
         self, user_input: dict[str, Any] | None = None
     ) -> FlowResult:
         """Handle a flow initialized by the user."""
-
         if user_input is not None:
+            name = user_input[CONF_NAME]
             host = user_input[CONF_HOST]
             port = user_input[CONF_PORT]
             api_key = user_input[CONF_API_KEY]
@@ -43,7 +44,7 @@ class MagicMirrorFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
                 return self.async_abort(reason="already_configured")
 
             api = MagicMirrorApiClient(
-                host, port, api_key, session=async_get_clientsession(self.hass)
+                name, host, port, api_key, session=async_get_clientsession(self.hass)
             )
 
             errors: dict[str, Any] = {}
@@ -80,9 +81,7 @@ class MagicMirrorFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
 
     async def _async_existing_devices(self, host: str) -> bool:
         """Find existing devices."""
-
         existing_devices = [
             f"{entry.data.get(CONF_HOST)}" for entry in self._async_current_entries()
         ]
-
         return host in existing_devices

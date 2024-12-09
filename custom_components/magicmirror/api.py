@@ -52,13 +52,14 @@ class MagicMirrorApiClient:
 
     def __init__(
         self,
+        name: str,
         host: str,
         port: str,
         api_key: str,
         session: aiohttp.client.ClientSession = None,
     ) -> None:
         """Initialize connection with MagicMirror."""
-
+        self.name = name
         self.host = host
         self.port = port
         self.api_key = api_key
@@ -72,15 +73,14 @@ class MagicMirrorApiClient:
 
     async def handle_request(self, response) -> Any:
         """Handle request."""
-
         LOGGER.debug("pre handle_request=%s", response)
 
         async with response as resp:
             if resp.status == HTTPStatus.FORBIDDEN:
-                raise Exception(f"Forbidden {resp}")  # Probably need API-key
+                raise Exception(f"Forbidden {resp}. Check for missing API-key.")
 
-            if resp.status != HTTPStatus.OK:
-                raise Exception(f"Response not 200 OK {resp}")
+            # if resp.status != HTTPStatus.OK:
+            #    raise Exception(f"Response not 200 OK {resp}")
 
             data = await resp.json()
 
@@ -90,7 +90,6 @@ class MagicMirrorApiClient:
 
     async def get(self, path: str) -> Any:
         """Get request."""
-
         get_url = f"{self.base_url}/{path}"
         LOGGER.debug("GET url=%s. headers=%s", get_url, self.headers)
 
@@ -107,7 +106,6 @@ class MagicMirrorApiClient:
 
     async def system_call(self, path: str) -> None:
         """Get request."""
-
         get_url = f"{self.base_url}/{path}"
         LOGGER.debug("GET url=%s. headers=%s", get_url, self.headers)
 
@@ -123,9 +121,8 @@ class MagicMirrorApiClient:
                 "Connection error: %s. Check if the MagicMirror service is running.", e
             )
 
-    async def post(self, path: str, data: str = None) -> Any:
+    async def post(self, path: str, data: str | None = None) -> Any:
         """Post request."""
-
         post_url = f"{self.base_url}/{path}"
         LOGGER.debug("POST url=%s. data=%s. headers=%s", post_url, data, self.headers)
 
@@ -259,7 +256,6 @@ class MagicMirrorApiClient:
         dropdown: bool = False,
     ) -> Any:
         """Notification screen."""
-
         alert = "&type=notification" if dropdown else ""
 
         return await self.get(
