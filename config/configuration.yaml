@@ -8,7 +8,7 @@ homeassistant_alerts:
 logbook:
 ssdp:
 sun:
-webhook:
+#webhook:
 zeroconf:
 
 # https://www.home-assistant.io/integrations/homeassistant/
