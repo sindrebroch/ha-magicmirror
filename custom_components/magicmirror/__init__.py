@@ -43,8 +43,9 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up MagicMirror from a config entry."""
     hass.data.setdefault(DOMAIN, {})
 
+    
     api = MagicMirrorApiClient(
-        name=entry.data[CONF_NAME],
+        name=entry.data.get(CONF_NAME, "MagicMirror"),
         host=entry.data[CONF_HOST],
         port=entry.data[CONF_PORT],
         api_key=entry.data[CONF_API_KEY],

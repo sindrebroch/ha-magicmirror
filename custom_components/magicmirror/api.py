@@ -56,7 +56,7 @@ class MagicMirrorApiClient:
         host: str,
         port: str,
         api_key: str,
-        session: aiohttp.client.ClientSession = None,
+        session: aiohttp.client.ClientSession | None = None,
     ) -> None:
         """Initialize connection with MagicMirror."""
         self.name = name
@@ -77,7 +77,8 @@ class MagicMirrorApiClient:
 
         async with response as resp:
             if resp.status == HTTPStatus.FORBIDDEN:
-                raise Exception(f"Forbidden {resp}. Check for missing API-key.")
+                exception = f"Forbidden {resp}. Check for missing API-key."
+                raise Exception(exception)
 
             # if resp.status != HTTPStatus.OK:
             #    raise Exception(f"Response not 200 OK {resp}")
@@ -93,7 +94,9 @@ class MagicMirrorApiClient:
         get_url = f"{self.base_url}/{path}"
         LOGGER.debug("GET url=%s. headers=%s", get_url, self.headers)
 
-        assert self._session is not None
+        if self._session is None:
+            LOGGER.warning("There is no session")
+            return None
 
         get = await self._session.get(
             url=get_url,
@@ -109,7 +112,9 @@ class MagicMirrorApiClient:
         get_url = f"{self.base_url}/{path}"
         LOGGER.debug("GET url=%s. headers=%s", get_url, self.headers)
 
-        assert self._session is not None
+        if self._session is None:
+            LOGGER.warning("There is no session")
+            return
 
         try:
             await self._session.get(
@@ -126,7 +131,9 @@ class MagicMirrorApiClient:
         post_url = f"{self.base_url}/{path}"
         LOGGER.debug("POST url=%s. data=%s. headers=%s", post_url, data, self.headers)
 
-        assert self._session is not None
+        if self._session is None:
+            LOGGER.warning("There is no session")
+            return None
 
         post = (
             await self._session.post(
