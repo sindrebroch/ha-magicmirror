@@ -158,7 +158,7 @@ class MonitorResponse:
 
 @attr.s(auto_attribs=True)
 class Query:
-    """Class representing Query"""
+    """Class representing Query."""
 
     data: str
 

@@ -10,6 +10,7 @@ from custom_components.magicmirror.api import MagicMirrorApiClient
 from custom_components.magicmirror.const import DOMAIN, LOGGER
 from custom_components.magicmirror.coordinator import MagicMirrorDataUpdateCoordinator
 
+
 async def async_get_config_entry_diagnostics(
     hass: HomeAssistant, entry: ConfigEntry
 ) -> dict[str, Any]:
@@ -30,7 +31,6 @@ async def async_get_config_entry_diagnostics(
         "module_updates": data.module_updates,
         "modules": str(data.modules),
     }
-
 
     # todo
     # TO_REDACT = [

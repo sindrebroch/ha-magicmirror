@@ -5,11 +5,9 @@ import logging
 from typing import Any
 
 import voluptuous as vol
-from homeassistant.components.notify import (
-    ATTR_TITLE,
-    PLATFORM_SCHEMA,
-    BaseNotificationService,
-)
+from homeassistant.components.notify import PLATFORM_SCHEMA
+from homeassistant.components.notify.const import ATTR_TITLE
+from homeassistant.components.notify.legacy import BaseNotificationService
 
 from custom_components.magicmirror.const import ATTR_CONFIG_ENTRY_ID, DOMAIN
 from custom_components.magicmirror.coordinator import MagicMirrorDataUpdateCoordinator

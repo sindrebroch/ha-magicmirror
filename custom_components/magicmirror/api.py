@@ -52,14 +52,12 @@ class MagicMirrorApiClient:
 
     def __init__(
         self,
-        name: str,
         host: str,
         port: str,
         api_key: str,
         session: aiohttp.client.ClientSession | None = None,
     ) -> None:
         """Initialize connection with MagicMirror."""
-        self.name = name
         self.host = host
         self.port = port
         self.api_key = api_key
@@ -80,12 +78,12 @@ class MagicMirrorApiClient:
                 exception = f"Forbidden {resp}. Check for missing API-key."
                 raise Exception(exception)
 
-            # if resp.status != HTTPStatus.OK:
-            #    raise Exception(f"Response not 200 OK {resp}")
-
-            data = await resp.json()
-
-        LOGGER.debug("post handle_request=%s", data)
+            if resp.status != HTTPStatus.OK:
+                LOGGER.warning("Response not 200 OK %s", resp)
+                data = None
+            else:
+                data = await resp.json()
+                LOGGER.debug("post handle_request=%s", data)
 
         return data
 
@@ -157,7 +155,10 @@ class MagicMirrorApiClient:
 
     async def update_available(self) -> ModuleUpdateResponses:
         """Get update available status."""
-        return ModuleUpdateResponses.from_dict(await self.get(API_UPDATE_AVAILABLE))
+        response = await self.get(API_UPDATE_AVAILABLE)
+        if response is None:
+            return ModuleUpdateResponses(success=False, result=[])
+        return ModuleUpdateResponses.from_dict(response)
 
     async def monitor_status(self) -> MonitorResponse:
         """Get monitor status."""

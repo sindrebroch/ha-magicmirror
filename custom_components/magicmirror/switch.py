@@ -4,8 +4,8 @@ from typing import Any
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, callback
+from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity import (
-    DeviceInfo,
     ToggleEntity,
     ToggleEntityDescription,
 )
@@ -23,7 +23,6 @@ async def async_setup_entry(
     async_add_entities: AddEntitiesCallback,
 ) -> None:
     """Add MagicMirror entities from a config_entry."""
-
     coordinator: MagicMirrorDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]
 
     async_add_entities(
@@ -44,7 +43,6 @@ class MagicMirrorSwitch(CoordinatorEntity, ToggleEntity):
         description: ToggleEntityDescription,
     ) -> None:
         """Initialize."""
-
         super().__init__(coordinator)
         self.coordinator = coordinator
         self.entity_description = description
@@ -56,7 +54,6 @@ class MagicMirrorSwitch(CoordinatorEntity, ToggleEntity):
     @property
     def is_on(self) -> bool:
         """Return true if the switch is on."""
-
         return self.sensor_data
 
     @property
@@ -73,20 +70,17 @@ class MagicMirrorSwitch(CoordinatorEntity, ToggleEntity):
     @callback
     def _handle_coordinator_update(self) -> None:
         """Handle data update."""
-
         self.update_from_data()
         super()._handle_coordinator_update()
 
     async def async_turn_on(self, **kwargs: Any) -> None:
         """Turn the entity on."""
-
         LOGGER.error("Switch not implemented")
         self.sensor_data = True
         await self.coordinator.async_request_refresh()
 
     async def async_turn_off(self, **kwargs: Any) -> None:
         """Turn the entity off."""
-
         LOGGER.error("Switch not implemented")
         self.sensor_data = False
         await self.coordinator.async_request_refresh()
@@ -101,7 +95,6 @@ class MagicMirrorModuleSwitch(MagicMirrorSwitch):
         module: ModuleDataResponse,
     ) -> None:
         """Initialize."""
-
         super().__init__(
             coordinator,
             ToggleEntityDescription(key=module.name),
@@ -109,7 +102,9 @@ class MagicMirrorModuleSwitch(MagicMirrorSwitch):
         self.module = module
 
         self.entity_id = f"switch.{module.identifier}"
-        self._attr_name = module.header if module.header is not None else module.name
+        self._attr_name = (
+            "Module " + module.header if module.header is not None else module.name
+        )
         self._attr_unique_id = module.identifier
         self.update_from_data()
 
